@@ -13,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+//import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -50,12 +51,17 @@ public class MainScreenController implements Initializable {
     @FXML private TableView<Part> partTableView;
     @FXML private TableView<Product> productTableView;
     @FXML private TextField procuctSearchBar;
+    Inventory mainInventory;
     
     private ObservableList<Part> partInventoryList = FXCollections.observableArrayList();
     private ObservableList<Product> productInventoryList = FXCollections.observableArrayList();
     private ObservableList<Part> partInventorySearchList = FXCollections.observableArrayList();
     private ObservableList<Product> productInventorySearchList = FXCollections.observableArrayList();
     //FXML Method Instantiation
+
+    public MainScreenController(Inventory inventory) {
+        this.mainInventory = inventory;
+    }
     
     /**
      *
@@ -72,6 +78,37 @@ public class MainScreenController implements Initializable {
         window.setScene(tableViewScene);
         window.show();
     }
+    
+    /**
+     * TO DO
+     * @param event
+     * @throws IOException 
+     */
+    public void modifyPartButtonPushed(ActionEvent event) throws IOException{
+        try{
+            
+            //Set the scene for the ModifyPart Screen
+            Part selectedPart = partTableView.getSelectionModel().getSelectedItem();
+            //Load .fxml and set controller
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ModifyPart.fxml"));
+            ModifyPartController controller = new ModifyPartController(mainInventory, selectedPart);
+            loader.setController(controller);
+            
+            //Set parent and scene
+            Parent modifyPartParent = loader.load();
+            Scene modifyPartScene = new Scene(modifyPartParent);
+            
+            //This line gets the Stage information
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+            window.setScene(modifyPartScene);
+            window.show();
+        }catch(IOException e){
+            
+        }
+        
+        
+    }
     /**
      * Initializes the controller class.
      * @param url
@@ -79,65 +116,49 @@ public class MainScreenController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TO DO
+        // Create a new inventory that contains our parts and products and add test data
         Inventory allInventory = new Inventory();
-        addTestDataToInventory(allInventory);
+        
+        //Add our parts to our table view and set it up
         partInventoryList.setAll(Inventory.getAllParts());
         partTableView.setItems(partInventoryList);
-        partTableView.refresh();
+        //partTableView.refresh(); possibly unecessary?
 
         partIdColumn.setCellValueFactory(new PropertyValueFactory<Part, Integer>("id"));
         partInventoryLevelColumn.setCellValueFactory(new PropertyValueFactory<Part, Integer>("stock"));
         partNameColumn.setCellValueFactory(new PropertyValueFactory<Part, String>("name"));
         partPriceColumn.setCellValueFactory(new PropertyValueFactory<Part, Double>("price"));
         
-    }   
-    
-    /**
-     * This function adds test data to our inventory
-     */
-    public static void addTestDataToInventory(Inventory inventory){
-        //Add test data 
-        //Following format for programmer reference (InHouse)
-        //int id, String name, double price, int stock, int min, int max, machine id
         
-        //Add InHouse Parts
-        Part testPartOne = new InHouse(1, "motherboard", 200.00, 5, 1, 10, 201);
-        Part testPartTwo = new InHouse(2, "cpu", 299.00, 7, 1, 20, 202);
-        Part testPartThree = new InHouse(3, "graphics card", 399.00, 3, 1, 40, 203);
-        inventory.addPart(testPartOne);
-        inventory.addPart(testPartTwo);
-        inventory.addPart(testPartThree);
-        
-        //Add Outsourced Parts
-        //int id, String name, double price, int stock, int min, int max, String companyName
-        Part testPartFour = new Outsourced(4, "high end motherboard", 500.00, 3, 1, 20, "ASUS");
-        Part testPartFive = new Outsourced(5, "high end cpu", 700.00, 4, 1, 15, "AMD");
-        Part testPartSix = new Outsourced(6, "high end graphics card", 1000.00, 2, 1, 10, "MSI");
-        
-        //Add Products
-        //int id, String name, double price, int stock, int min, int max
-        Product productOne = new Product(1001, "low end pc", 500.00, 3, 1, 20);
-        Product productTwo = new Product(1002, "mid range pc", 700.00, 4, 1, 15);
-        Product productThree = new Product(1003, "high end pc", 1000.00, 2, 1, 10);
-        
-        //Adding associated parts
-        productOne.addAssociatedPart(testPartOne);
-        productOne.addAssociatedPart(testPartTwo);
-        productOne.addAssociatedPart(testPartThree);
-        
-        productTwo.addAssociatedPart(testPartOne);
-        productTwo.addAssociatedPart(testPartFive);
-        productTwo.addAssociatedPart(testPartSix);
-        
-        productThree.addAssociatedPart(testPartFour);
-        productThree.addAssociatedPart(testPartFive);
-        productThree.addAssociatedPart(testPartSix);
-        
-        //Add products to inventory
-        inventory.addProduct(productOne);
-        inventory.addProduct(productTwo);
-        inventory.addProduct(productThree);
+        //Add our products to our table view and set it up
+        productInventoryList.setAll(Inventory.getAllProducts());
+        productTableView.setItems(productInventoryList);
+
+        productIdColumn.setCellValueFactory(new PropertyValueFactory<Product, Integer>("id"));
+        productInventoryLevelColumn.setCellValueFactory(new PropertyValueFactory<Product, Integer>("stock"));
+        productNameColumn.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
+        productPriceColumn.setCellValueFactory(new PropertyValueFactory<Product, Double>("price"));
     }
+    
+//    private <T> TableColumn<T, Double> formatPriceColumn(){
+//        TableColumn<T, Double> priceColumn= new TableColumn("Price");
+//        priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+//    
+//        priceColumn.setCellFactory((TableColumn<T, Double> column) -> {
+//            return new TableCell<T, Double>() {
+//                @Override
+//                protected void updateItem(Double item, boolean empty) {
+//                    if (!empty) {
+//                        setText("$" + String.format("%10.2f", item));
+//                    }
+//                    else{
+//                        setText("");
+//                    }
+//                }
+//            };
+//        });
+//        return priceColumn;
+//    }
+    
     
 }

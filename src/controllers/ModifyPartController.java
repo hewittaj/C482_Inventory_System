@@ -8,6 +8,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import models.Inventory;
+import models.Part;
 
 /**
  * FXML Controller class
@@ -28,13 +30,28 @@ public class ModifyPartController implements Initializable {
     @FXML private TextField partMinTextField;
     @FXML private Button partSaveButton;
     @FXML private Button partCancelButton;
+    Inventory mainInventory;
+    Part partSelected;
 
+    public ModifyPartController(Inventory inventory, Part partSelected){
+        this.mainInventory = inventory;
+        this.partSelected = partSelected;
+    }
+    
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        this.partIdTextField = new TextField();
     }    
+    
+    public void getSelectedPart(Part part){
+        this.partIdTextField.setText(String.valueOf(part.getId()));
+        
+    }
     
 }
