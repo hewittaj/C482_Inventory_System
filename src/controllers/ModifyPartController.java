@@ -2,13 +2,14 @@ package controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import models.InHouse;
 import models.Inventory;
 import models.Outsourced;
 import models.Part;
@@ -32,7 +33,6 @@ public class ModifyPartController implements Initializable {
     @FXML private TextField partMinTextField;
     @FXML private Button partSaveButton;
     @FXML private Button partCancelButton;
-    @FXML private ToggleGroup toggleGroup;
     Inventory mainInventory;
     Part partSelected;
 
@@ -48,12 +48,7 @@ public class ModifyPartController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Initialize our values of the selected part
-        //Set a toggle group so only one can be selected
-        this.toggleGroup.selectToggle(inHouseRadioButton);
-        this.outsourcedRadioButton.setToggleGroup(toggleGroup);
-        this.inHouseRadioButton.setToggleGroup(toggleGroup);
-        
+        // Initialize our values of the selected part        
         // If our partSelected is an outsourced part or inhouse, we do different things
         if(partSelected instanceof Outsourced){
             //We must create an casted Outsourced Part object otherwise we can't call getCompanyName()
@@ -69,7 +64,41 @@ public class ModifyPartController implements Initializable {
             this.partSwappableTextField.setText(outsourced.getCompanyName());
                     
         }
+        //If our part is an instance of InHouse...
+        if(partSelected instanceof InHouse){
+            InHouse inHouse = (InHouse) this.partSelected;
+            this.inHouseRadioButton.setSelected(true);
+            this.partIdTextField.setText(String.valueOf(inHouse.getId()));
+            this.partNameTextField.setText(inHouse.getName());
+            this.partInvTextField.setText(String.valueOf(inHouse.getStock()));
+            this.partPriceTextField.setText(String.valueOf(inHouse.getPrice()));
+            this.partMaxTextField.setText(String.valueOf(inHouse.getMax()));
+            this.partMinTextField.setText(String.valueOf(inHouse.getMin()));
+            this.partSwappableLabel.setText("Machine ID");
+            this.partSwappableTextField.setText(String.valueOf(inHouse.getMachineId()));
+        }
         
-    }    
+    }
+    
+    /**
+     * This will deselect the outsourced radio button when the in house is clicked
+     * @param event 
+     */
+    @FXML
+    public void inHouseRadioButtonSelected(ActionEvent event){
+        outsourcedRadioButton.setSelected(false);
+        partSwappableLabel.setText("Machine ID");
+    }
+    
+    /**
+     * This will deselect the in house radio button when the outsourced button is 
+     * clicked
+     * @param event 
+     */
+    @FXML
+    public void outsourcedRadioButtonSelected(ActionEvent event){
+        inHouseRadioButton.setSelected(false);
+        partSwappableLabel.setText("Company Name");
+    }
     
 }

@@ -68,6 +68,7 @@ public class MainScreenController implements Initializable {
      * @param event
      * @throws java.io.IOException
      */
+    @FXML
     public void addPartButtonPushed(ActionEvent event) throws IOException{
         Parent tableViewParent = FXMLLoader.load(getClass().getResource("/views/AddPart.fxml"));
         Scene tableViewScene = new Scene(tableViewParent);
@@ -84,6 +85,7 @@ public class MainScreenController implements Initializable {
      * @param event
      * @throws IOException 
      */
+    @FXML
     public void modifyPartButtonPushed(ActionEvent event) throws IOException{
         try{
             //TO DO SET UP ERRORS IF NO PART SELECTED
