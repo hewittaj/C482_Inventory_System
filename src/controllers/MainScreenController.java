@@ -86,7 +86,8 @@ public class MainScreenController implements Initializable {
      */
     public void modifyPartButtonPushed(ActionEvent event) throws IOException{
         try{
-            
+            //TO DO SET UP ERRORS IF NO PART SELECTED
+            //For the .fxml in this one as well I deleted the controller fx:id 
             //Set the scene for the ModifyPart Screen
             Part selectedPart = partTableView.getSelectionModel().getSelectedItem();
             //Load .fxml and set controller

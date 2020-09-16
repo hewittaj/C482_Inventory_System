@@ -46,12 +46,13 @@ public class mainProgram extends Application{
         //prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" 
         //xmlns:fx="http://javafx.com/fxml/1"fx:controller="controllers.MainScreenController">
         //This is because the loader needs a zero argument constructor, but we pass it inventory.
+        
         controllers.MainScreenController controller = new MainScreenController(inventory);
         loader.setController(controller);
         
         Parent root = loader.load();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
+        Scene mainScreenScene = new Scene(root);
+        stage.setScene(mainScreenScene);
         stage.show();
         
     }
@@ -77,6 +78,9 @@ public class mainProgram extends Application{
         Part testPartFour = new Outsourced(4, "high end motherboard", 500.00, 3, 1, 20, "ASUS");
         Part testPartFive = new Outsourced(5, "high end cpu", 700.00, 4, 1, 15, "AMD");
         Part testPartSix = new Outsourced(6, "high end graphics card", 1000.00, 2, 1, 10, "MSI");
+        inventory.addPart(testPartFour);
+        inventory.addPart(testPartFive);
+        inventory.addPart(testPartSix);
         
         //Add Products
         //int id, String name, double price, int stock, int min, int max

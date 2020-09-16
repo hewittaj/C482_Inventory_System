@@ -8,8 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1" fx:controller="controllers.ModifyPartController">
+<AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label layoutX="76.0" layoutY="66.0" text="Modify Part">
          <font>
@@ -69,12 +68,12 @@
             </AnchorPane>
          </children>
       </VBox>
-      <TextField fx:id="partIdTextField" disable="true" layoutX="176.0" layoutY="129.0" promptText="Auto Gen - Disabled" />
-      <TextField fx:id="partNameTextField" layoutX="176.0" layoutY="165.0" />
-      <TextField fx:id="partInvTextField" layoutX="176.0" layoutY="198.0" />
-      <TextField fx:id="partPriceTextField" layoutX="176.0" layoutY="233.0" />
-      <TextField fx:id="partMaxTextField" layoutX="176.0" layoutY="268.0" />
-      <TextField fx:id="partSwappableTextField" layoutX="176.0" layoutY="307.0" />
+      <TextField fx:id="partIdTextField" disable="true" layoutX="180.0" layoutY="129.0" promptText="Auto Gen - Disabled" />
+      <TextField fx:id="partNameTextField" layoutX="180.0" layoutY="165.0" />
+      <TextField fx:id="partInvTextField" layoutX="180.0" layoutY="198.0" />
+      <TextField fx:id="partPriceTextField" layoutX="180.0" layoutY="233.0" />
+      <TextField fx:id="partMaxTextField" layoutX="180.0" layoutY="268.0" />
+      <TextField fx:id="partSwappableTextField" layoutX="180.0" layoutY="307.0" />
       <TextField fx:id="partMinTextField" layoutX="417.0" layoutY="268.0" />
       <Button fx:id="partSaveButton" layoutX="319.0" layoutY="411.0" mnemonicParsing="false" text="Save" />
       <Button fx:id="partCancelButton" layoutX="379.0" layoutY="411.0" mnemonicParsing="false" text="Cancel" />
