@@ -1,14 +1,21 @@
 package controllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import models.InHouse;
 import models.Inventory;
 import models.Outsourced;
@@ -35,6 +42,8 @@ public class ModifyPartController implements Initializable {
     @FXML private Button partCancelButton;
     Inventory mainInventory;
     Part partSelected;
+    int errorCode = 0;
+    boolean errorThrown = false;
 
     public ModifyPartController(Inventory inventory, Part partSelectedByUser){
         this.mainInventory = inventory;
@@ -101,4 +110,168 @@ public class ModifyPartController implements Initializable {
         partSwappableLabel.setText("Company Name");
     }
     
+    /**
+     * This method takes us back to the main screen if the cancel button is pushed.
+     * TO DO CONFIRM USER WANTS TO CANCEL look at https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Alert.AlertType.html
+     * @param event 
+     */
+    @FXML
+    public void cancelButtonPushed(ActionEvent event){
+        try{
+            // For the .fxml in this one as well I deleted the controller fx:id 
+            // Set the scene for the Main Screen
+            // Load .fxml and set controller
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MainScreen.fxml"));
+            MainScreenController controller = new MainScreenController(mainInventory);
+            loader.setController(controller);
+            
+            // Set parent and scene
+            Parent mainScreenParent = loader.load();
+            Scene mainScreenScene = new Scene(mainScreenParent);
+            
+            // This line gets the Stage information
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+            window.setScene(mainScreenScene);
+            window.show();
+        }catch(IOException e){
+            
+        }
+        
+    }
+    
+    /**
+     * This method takes the updated information that has been modified and passes
+     * it to the main screen/updates it.
+     * @param event 
+     */
+    @FXML
+    public void saveButtonPushed(ActionEvent event){
+        try{
+            // If the inhouse radio button is selected and the part is currently an outsourced part
+            // Will check for errors first and if an error is thrown it will show the alert
+            checkForErrors();
+            showAlert(errorCode);
+            if(errorCode == 0){
+                if(inHouseRadioButton.isSelected() && (partSelected instanceof Outsourced)){
+                    updateToInHouse();
+                }
+
+                // If the inhouse radio button is selected and part is currently inhouse part
+                // Will check for errors first and if an error is thrown it will show the alert
+                if(inHouseRadioButton.isSelected() && (partSelected instanceof InHouse)){
+                    updateToInHouse();
+                }
+
+                // If the outsourced radio button is selected and the part is currently an inhouse part
+                // Will check for errors first and if an error is thrown it will show the alert
+                if(outsourcedRadioButton.isSelected() && (partSelected instanceof InHouse)){
+                    updateToOutsourced();
+                }
+
+                // If the outsourced radio button is selected and the part is currently outsourced
+                // Will check for errors first and if an error is thrown it will show the alert
+                if(outsourcedRadioButton.isSelected() && (partSelected instanceof Outsourced)){
+                    updateToOutsourced();
+                }
+
+                // For the .fxml in this one as well I deleted the controller fx:id 
+                // Set the scene for the Main Screen
+                // Load .fxml and set controller
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MainScreen.fxml"));
+                MainScreenController controller = new MainScreenController(mainInventory);
+                loader.setController(controller);
+
+                // Set parent and scene
+                Parent mainScreenParent = loader.load();
+                Scene mainScreenScene = new Scene(mainScreenParent);
+
+                // This line gets the Stage information
+                Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+                window.setScene(mainScreenScene);
+                window.show();
+            }
+        }catch(IOException e){
+            
+            
+        }
+    }
+    
+    /**
+     * Update the part to an InHouse Part or reinitialize part as InHouse
+     */
+    public void updateToInHouse(){
+        mainInventory.updatePart(
+                partSelected.getId()-1, 
+                new InHouse(Integer.valueOf(
+                partIdTextField.getText()),
+                partNameTextField.getText(),
+                Double.valueOf(partPriceTextField.getText()),
+                Integer.valueOf(partInvTextField.getText()),
+                Integer.valueOf(partMinTextField.getText()),
+                Integer.valueOf(partMaxTextField.getText()),
+                Integer.valueOf(partSwappableTextField.getText()))
+        );
+    }
+    
+    /**
+     * Update the part to an Outsourced Part or reinitialize part as Outsourced
+     */
+    public void updateToOutsourced(){
+        mainInventory.updatePart(
+                partSelected.getId()-1, 
+                new Outsourced(
+                Integer.valueOf(partIdTextField.getText()),
+                partNameTextField.getText(),
+                Double.valueOf(partPriceTextField.getText()),
+                Integer.valueOf(partInvTextField.getText()),
+                Integer.valueOf(partMinTextField.getText()),
+                Integer.valueOf(partMaxTextField.getText()),
+                partSwappableTextField.getText())
+        );
+    }
+    
+    /**
+     * This method takes in an errorNumber and outputs a certain alert based on the number
+     * @param errorNumber 
+     */
+    public void checkForErrors(){
+        
+        //This error is if...
+        if(inHouseRadioButton.isSelected() && partSwappableTextField.getText().matches("[a-zA-Z]+")){
+            errorThrown = true;
+            this.errorCode = 1;
+            //errorThrown = true;
+        }
+        if(outsourcedRadioButton.isSelected() && partSwappableTextField.getText().matches("^[0-9]*$")){
+            errorThrown = true;
+            this.errorCode = 2;
+            //errorThrown = true;
+        }
+//        else{
+//            this.errorCode = 0;
+//            errorThrown = false;
+//        }
+    }
+    
+    /**
+     * This method takes in an error number and creates an alert based on if it
+     * errorNumber matching an if statement
+     * @param errorNumber 
+     */
+    public void showAlert(int errorNumber){
+        //Initialize an alert instance
+        Alert error = new Alert(Alert.AlertType.ERROR);
+        error.setTitle("ERROR");
+        error.setHeaderText("CANNOT SAVE");
+        if(errorNumber == 0){
+            return;
+        }
+        if(errorNumber == 1){
+            error.setContentText("Machine ID must be a number!");
+        }
+        error.showAndWait();
+        return;
+    }
 }

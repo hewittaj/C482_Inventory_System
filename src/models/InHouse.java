@@ -10,15 +10,15 @@ public class InHouse extends Part{
      * //TO DO 
      * @param id
      * @param name
-     * @param Price
+     * @param price
      * @param stock
      * @param min
      * @param max
      * @param machineID 
      */
-    public InHouse(int id, String name, double Price, int stock, int min,
+    public InHouse(int id, String name, double price, int stock, int min,
             int max, int machineID){
-        super(id, name, Price, stock, min, max);
+        super(id, name, price, stock, min, max);
         
         this.machineId = machineID; //TO DO
     }
