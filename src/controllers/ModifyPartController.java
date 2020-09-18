@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -118,7 +120,14 @@ public class ModifyPartController implements Initializable {
     @FXML
     public void cancelButtonPushed(ActionEvent event){
         try{
-            // For the .fxml in this one as well I deleted the controller fx:id 
+            boolean wantsToCancel;
+            Alert cancelAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            cancelAlert.setTitle("CANCEL");
+            cancelAlert.setHeaderText("Are you sure you want to cancel?");
+            cancelAlert.setContentText("Click 'OK' to confirm.");
+            Optional<ButtonType> decision = cancelAlert.showAndWait();
+            if(decision.get() == ButtonType.OK){
+                // For the .fxml in this one as well I deleted the controller fx:id 
             // Set the scene for the Main Screen
             // Load .fxml and set controller
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MainScreen.fxml"));
@@ -134,6 +143,10 @@ public class ModifyPartController implements Initializable {
 
             window.setScene(mainScreenScene);
             window.show();
+            }else{
+                return;
+            }
+            
         }catch(IOException e){
             
         }
@@ -150,6 +163,7 @@ public class ModifyPartController implements Initializable {
         try{
             // If the inhouse radio button is selected and the part is currently an outsourced part
             // Will check for errors first and if an error is thrown it will show the alert
+            this.errorCode = 0; //reset to zero for no error thrown
             checkForErrors();
             showAlert(errorCode);
             if(errorCode == 0){
@@ -238,21 +252,76 @@ public class ModifyPartController implements Initializable {
      */
     public void checkForErrors(){
         
-        //This error is if...
+        /*
+        If the inhouse radio button is selected and the textfield contains letters
+        we throw an error as it can only contain numbers
+        */ 
         if(inHouseRadioButton.isSelected() && partSwappableTextField.getText().matches("[a-zA-Z]+")){
             errorThrown = true;
             this.errorCode = 1;
             //errorThrown = true;
         }
+        /*
+        If the outsourced radio button is selected and the textfield contains numbers
+        we throw an error as it can only contain letters
+        */ 
         if(outsourcedRadioButton.isSelected() && partSwappableTextField.getText().matches("^[0-9]*$")){
             errorThrown = true;
             this.errorCode = 2;
             //errorThrown = true;
         }
-//        else{
-//            this.errorCode = 0;
-//            errorThrown = false;
-//        }
+        
+        /*
+        If the content of any text field is empty an error is thrown
+        */
+        if(partNameTextField.getText().isEmpty() || 
+                partInvTextField.getText().isEmpty() ||
+                partPriceTextField.getText().isEmpty() ||
+                partMaxTextField.getText().isEmpty() ||
+                partMinTextField.getText().isEmpty() ||
+                partSwappableTextField.getText().isEmpty()
+                ){
+            errorThrown = true;
+            this.errorCode = 3;
+        }
+        
+        /*
+        If inventory, max, or min field are less than zero an error is thrown
+        */
+        if(Integer.valueOf(partInvTextField.getText()) < 0 ||
+                Integer.valueOf(partMaxTextField.getText()) < 0 ||
+                Integer.valueOf(partMinTextField.getText()) < 0){
+            errorThrown = true;
+            this.errorCode = 4;
+            return;
+        }
+        
+        /**
+         * If the value of our inventory is greater than max allowable throw an error
+         */
+        else if(Integer.valueOf(partInvTextField.getText()) > 
+                Integer.valueOf(partMaxTextField.getText())){
+            errorThrown = true;
+            this.errorCode = 5;
+            return;
+        }
+        
+        /**
+         * If the value of our inventory is less than min allowable throw an error
+         */
+        else if(Integer.valueOf(partInvTextField.getText()) < 
+                Integer.valueOf(partMinTextField.getText())){
+            errorThrown = true;
+            this.errorCode = 6;
+            return;
+        }
+        
+        else if(Integer.valueOf(partMinTextField.getText()) > 
+                Integer.valueOf(partMaxTextField.getText())){
+            errorThrown = true;
+            this.errorCode = 7;
+            return;
+        }
     }
     
     /**
@@ -270,6 +339,24 @@ public class ModifyPartController implements Initializable {
         }
         if(errorNumber == 1){
             error.setContentText("Machine ID must be a number!");
+        }
+        if(errorNumber == 2){
+            error.setContentText("Company name must not include text, nut just numbers");
+        }
+        if(errorNumber == 3){
+            error.setContentText("All fields must have content!");
+        }
+        if(errorNumber == 4){
+            error.setContentText("Number cannot be negative!");
+        }
+        if(errorNumber == 5){
+            error.setContentText("Inventory cannot be greater than max field!");
+        }
+        if(errorNumber == 6){
+            error.setContentText("Inventory cannot be less than min field!");
+        }
+        if(errorNumber == 7){
+            error.setContentText("Min cannot be greater than max!");
         }
         error.showAndWait();
         return;
