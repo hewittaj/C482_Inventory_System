@@ -24,7 +24,7 @@ import models.Outsourced;
 import models.Part;
 
 /**
- * FXML Controller class
+ * FXML Controller class for the Modify Part screen
  *
  * @author alexhewitt
  */
@@ -53,9 +53,10 @@ public class ModifyPartController implements Initializable {
     }
     //CREATE TWO METHODS FOR DETECTING WHEN SWITCHING FROM OUTSOURCED TO INHOUSE AND UPDATE THEIR TYPE
     /**
-     * Initializes the controller class.
-     * @param url
-     * @param rb
+     * Initializes the controller class and detects if part selected is an instance
+     * of InHouse or Outsourced.
+     * @param url N/a
+     * @param rb N/a
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -93,7 +94,7 @@ public class ModifyPartController implements Initializable {
     
     /**
      * This will deselect the outsourced radio button when the in house is clicked
-     * @param event 
+     * @param event Event that is caught to detect radio button selected
      */
     @FXML
     public void inHouseRadioButtonSelected(ActionEvent event){
@@ -104,7 +105,7 @@ public class ModifyPartController implements Initializable {
     /**
      * This will deselect the in house radio button when the outsourced button is 
      * clicked
-     * @param event 
+     * @param event Event that is caught to detect radio button selected
      */
     @FXML
     public void outsourcedRadioButtonSelected(ActionEvent event){
@@ -114,17 +115,18 @@ public class ModifyPartController implements Initializable {
     
     /**
      * This method takes us back to the main screen if the cancel button is pushed.
-     * TO DO CONFIRM USER WANTS TO CANCEL look at https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Alert.AlertType.html
-     * @param event 
+     * Alert documentation https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Alert.AlertType.html
+     * @param event Event that is caught to detect cancel button pushed
      */
     @FXML
     public void cancelButtonPushed(ActionEvent event){
         try{
-            boolean wantsToCancel;
+            // Set up an alert
             Alert cancelAlert = new Alert(Alert.AlertType.CONFIRMATION);
             cancelAlert.setTitle("CANCEL");
             cancelAlert.setHeaderText("Are you sure you want to cancel?");
             cancelAlert.setContentText("Click 'OK' to confirm.");
+            
             Optional<ButtonType> decision = cancelAlert.showAndWait();
             if(decision.get() == ButtonType.OK){
                 // For the .fxml in this one as well I deleted the controller fx:id 

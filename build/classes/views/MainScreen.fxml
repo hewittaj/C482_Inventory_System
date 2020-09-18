@@ -39,7 +39,7 @@
                         <Font name="Arial" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="deletePartButton" layoutX="375.0" layoutY="274.0" mnemonicParsing="false" prefHeight="20.0" text="Delete" AnchorPane.rightAnchor="6.5">
+                  <Button fx:id="deletePartButton" layoutX="375.0" layoutY="274.0" mnemonicParsing="false" onAction="#deletePartButtonPushed" prefHeight="20.0" text="Delete" AnchorPane.rightAnchor="6.5">
                      <font>
                         <Font name="Arial" size="16.0" />
                      </font>
@@ -86,7 +86,7 @@
             <Font name="Arial Bold" size="24.0" />
          </font>
       </Label>
-      <Button fx:id="exitButton" layoutX="863.0" layoutY="446.0" mnemonicParsing="false" text="Exit">
+      <Button fx:id="exitButton" layoutX="863.0" layoutY="446.0" mnemonicParsing="false" onAction="#exitButtonPushed" text="Exit">
          <font>
             <Font name="Arial" size="16.0" />
          </font>

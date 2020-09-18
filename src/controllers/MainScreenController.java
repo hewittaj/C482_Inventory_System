@@ -2,7 +2,9 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,7 +14,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 //import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -52,6 +56,8 @@ public class MainScreenController implements Initializable {
     @FXML private TableView<Product> productTableView;
     @FXML private TextField procuctSearchBar;
     Inventory mainInventory;
+    int errorNumber;
+    boolean errorThrown;
     
     private ObservableList<Part> partInventoryList = FXCollections.observableArrayList();
     private ObservableList<Product> productInventoryList = FXCollections.observableArrayList();
@@ -59,14 +65,18 @@ public class MainScreenController implements Initializable {
     private ObservableList<Product> productInventorySearchList = FXCollections.observableArrayList();
     //FXML Method Instantiation
 
+    /**
+     * 
+     * @param inventory Takes in an inventory instance and initializes it for the controller
+     */
     public MainScreenController(Inventory inventory) {
         this.mainInventory = inventory;
     }
     
     /**
      *
-     * @param event
-     * @throws java.io.IOException
+     * @param event Catches events that happen in order to capture button push
+     * @throws java.io.IOException Exception that is thrown if an IO exception is shown
      */
     @FXML
     public void addPartButtonPushed(ActionEvent event) throws IOException{
@@ -143,25 +153,73 @@ public class MainScreenController implements Initializable {
         productPriceColumn.setCellValueFactory(new PropertyValueFactory<Product, Double>("price"));
     }
     
-//    private <T> TableColumn<T, Double> formatPriceColumn(){
-//        TableColumn<T, Double> priceColumn= new TableColumn("Price");
-//        priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
-//    
-//        priceColumn.setCellFactory((TableColumn<T, Double> column) -> {
-//            return new TableCell<T, Double>() {
-//                @Override
-//                protected void updateItem(Double item, boolean empty) {
-//                    if (!empty) {
-//                        setText("$" + String.format("%10.2f", item));
-//                    }
-//                    else{
-//                        setText("");
-//                    }
-//                }
-//            };
-//        });
-//        return priceColumn;
-//    }
+    /**
+     * 
+     * @param event Event that is caught if exit button is pushed
+     */
+    @FXML
+    public void exitButtonPushed(ActionEvent event){
+        Platform.exit();
+    }
+    /**
+     * 
+     * @param event 
+     */
+    public void deletePartButtonPushed(ActionEvent event){
+        this.errorNumber = 0;
+        Part selectedPart = partTableView.getSelectionModel().getSelectedItem();
+        // If part list is empty
+        if(partInventoryList.isEmpty()){
+            errorThrown = true;
+            this.errorNumber = 1;
+            showAlert(errorNumber);
+        }
+        // If part list is not empty, but our selected part is null
+        if(selectedPart == null && !partInventoryList.isEmpty()){
+            errorThrown = true;
+            this.errorNumber = 2;
+            showAlert(errorNumber);
+        }
+        if(this.errorNumber == 0){
+            Alert confirmDelete = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmDelete.setTitle("CONFIRM DELETE");
+            confirmDelete.setHeaderText("Are you sure you would like to delete this part?");
+            Optional<ButtonType> confirm = confirmDelete.showAndWait();
+            if(confirm.get() == ButtonType.OK){
+                partInventoryList.remove(selectedPart);
+                mainInventory.deletePart(selectedPart);
+            }else{
+                return;
+            }
+        }
+            
+        
+        
+    }
     
+    /**
+     * This method is the logic for checking if an error was thrown
+     */
+    public void checkForError(){
+        
+    }
     
+    /**
+     * This method shows an alert based on the error number
+     */
+    public void showAlert(int errorNumber){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("ERROR");
+        alert.setHeaderText("Error has occured");
+        if(errorNumber == 0){
+            return;
+        }
+        if(errorNumber == 1){
+            alert.setContentText("Inventory list is empty!");
+        }
+        if(errorNumber == 2){
+            alert.setContentText("No part selected!");
+        }
+        alert.showAndWait();
+    }
 }
