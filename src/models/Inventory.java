@@ -35,8 +35,12 @@ public class Inventory {
      * @return 
      */
     public static Part lookupPart(int partId){
-        
-        return allParts.get(partId);
+        for(int i = 0; i < allParts.size(); i++){
+            if(allParts.get(i).getId() == partId){
+                return allParts.get(i);
+            }
+        }
+        return null;
     }
     
     /**
@@ -45,7 +49,12 @@ public class Inventory {
      * @return 
      */
     public static Product lookupProduct(int productId){
-        return allProducts.get(productId);
+        for(Product product: allProducts){
+            if(product.getId() == productId){
+                return allProducts.get(productId);
+            }
+        }
+        return null;
     }
     
     /**
@@ -133,5 +142,12 @@ public class Inventory {
      */
     public static ObservableList<Product> getAllProducts(){
         return allProducts;
+    }
+    /**
+     * Gets the last parts Id number for adding a part functionality
+     * @return The part ID for the last part in the list
+     */
+    public static int getLastPartId(){
+        return allParts.get(allParts.size() - 1).getId();
     }
 }

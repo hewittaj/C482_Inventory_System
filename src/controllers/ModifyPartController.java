@@ -47,6 +47,11 @@ public class ModifyPartController implements Initializable {
     int errorCode = 0;
     boolean errorThrown = false;
 
+    /**
+     * This method initializes the ModifyPartController
+     * @param inventory Inventory that we pass from screen to screen
+     * @param partSelectedByUser Part selected by user on the MainScreenController
+     */
     public ModifyPartController(Inventory inventory, Part partSelectedByUser){
         this.mainInventory = inventory;
         this.partSelected = partSelectedByUser;

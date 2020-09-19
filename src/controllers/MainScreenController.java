@@ -80,13 +80,18 @@ public class MainScreenController implements Initializable {
      */
     @FXML
     public void addPartButtonPushed(ActionEvent event) throws IOException{
-        Parent tableViewParent = FXMLLoader.load(getClass().getResource("/views/AddPart.fxml"));
-        Scene tableViewScene = new Scene(tableViewParent);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AddPart.fxml"));
+        AddPartController controller = new AddPartController(mainInventory);
+        loader.setController(controller);
+
+        //Set parent and scene
+        Parent addPartParent = loader.load();
+        Scene addPartScene = new Scene(addPartParent);
 
         //This line gets the Stage information
-        Stage window = (Stage)((Node)event.getTarget()).getScene().getWindow();
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
-        window.setScene(tableViewScene);
+        window.setScene(addPartScene);
         window.show();
     }
     
@@ -102,6 +107,16 @@ public class MainScreenController implements Initializable {
             //For the .fxml in this one as well I deleted the controller fx:id 
             //Set the scene for the ModifyPart Screen
             Part selectedPart = partTableView.getSelectionModel().getSelectedItem();
+            
+            // If no part is selected
+            if(selectedPart == null){
+                Alert noPartSelected = new Alert(Alert.AlertType.ERROR);
+                noPartSelected.setTitle("ERROR!");
+                noPartSelected.setHeaderText("NO PART SELECTED!");
+                noPartSelected.setContentText("A part needs to be selected to modify it!");
+                noPartSelected.showAndWait();
+                return;
+            }
             //Load .fxml and set controller
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ModifyPart.fxml"));
             ModifyPartController controller = new ModifyPartController(mainInventory, selectedPart);
@@ -118,10 +133,9 @@ public class MainScreenController implements Initializable {
             window.show();
         }catch(IOException e){
             
-        }
-        
-        
+        }   
     }
+
     /**
      * Initializes the controller class.
      * @param url
