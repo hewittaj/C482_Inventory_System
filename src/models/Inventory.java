@@ -148,6 +148,12 @@ public class Inventory {
      * @return The part ID for the last part in the list
      */
     public static int getLastPartId(){
-        return allParts.get(allParts.size() - 1).getId();
+        int maxId = 0;
+        for(Part part: allParts){
+            if(part.getId() > maxId){
+                maxId = part.getId();
+            }
+        }
+        return maxId;
     }
 }

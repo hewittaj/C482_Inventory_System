@@ -225,14 +225,14 @@ public class ModifyPartController implements Initializable {
     public void updateToInHouse(){
         mainInventory.updatePart(
                 partSelected.getId()-1, 
-                new InHouse(Integer.valueOf(
-                partIdTextField.getText()),
-                partNameTextField.getText(),
-                Double.valueOf(partPriceTextField.getText()),
-                Integer.valueOf(partInvTextField.getText()),
-                Integer.valueOf(partMinTextField.getText()),
-                Integer.valueOf(partMaxTextField.getText()),
-                Integer.valueOf(partSwappableTextField.getText()))
+                new InHouse(
+                    Integer.valueOf(partIdTextField.getText()),
+                    partNameTextField.getText(),
+                    Double.valueOf(partPriceTextField.getText()),
+                    Integer.valueOf(partInvTextField.getText()),
+                    Integer.valueOf(partMinTextField.getText()),
+                    Integer.valueOf(partMaxTextField.getText()),
+                    Integer.valueOf(partSwappableTextField.getText()))
         );
     }
     
@@ -243,19 +243,18 @@ public class ModifyPartController implements Initializable {
         mainInventory.updatePart(
                 partSelected.getId()-1, 
                 new Outsourced(
-                Integer.valueOf(partIdTextField.getText()),
-                partNameTextField.getText(),
-                Double.valueOf(partPriceTextField.getText()),
-                Integer.valueOf(partInvTextField.getText()),
-                Integer.valueOf(partMinTextField.getText()),
-                Integer.valueOf(partMaxTextField.getText()),
-                partSwappableTextField.getText())
+                    Integer.valueOf(partIdTextField.getText()),
+                    partNameTextField.getText(),
+                    Double.valueOf(partPriceTextField.getText()),
+                    Integer.valueOf(partInvTextField.getText()),
+                    Integer.valueOf(partMinTextField.getText()),
+                    Integer.valueOf(partMaxTextField.getText()),
+                    partSwappableTextField.getText())
         );
     }
     
     /**
      * This method takes in an errorNumber and outputs a certain alert based on the number
-     * @param errorNumber 
      */
     public void checkForErrors(){
         
@@ -266,7 +265,7 @@ public class ModifyPartController implements Initializable {
         if(inHouseRadioButton.isSelected() && partSwappableTextField.getText().matches("[a-zA-Z]+")){
             errorThrown = true;
             this.errorCode = 1;
-            //errorThrown = true;
+            return;
         }
         /*
         If the outsourced radio button is selected and the textfield contains numbers
@@ -275,7 +274,7 @@ public class ModifyPartController implements Initializable {
         if(outsourcedRadioButton.isSelected() && partSwappableTextField.getText().matches("^[0-9]*$")){
             errorThrown = true;
             this.errorCode = 2;
-            //errorThrown = true;
+            return;
         }
         
         /*
@@ -290,6 +289,7 @@ public class ModifyPartController implements Initializable {
                 ){
             errorThrown = true;
             this.errorCode = 3;
+            return;
         }
         
         /*
@@ -323,6 +323,9 @@ public class ModifyPartController implements Initializable {
             return;
         }
         
+        /**
+         * If the value of our min field is greater than our max field
+         */
         else if(Integer.valueOf(partMinTextField.getText()) > 
                 Integer.valueOf(partMaxTextField.getText())){
             errorThrown = true;
@@ -348,7 +351,7 @@ public class ModifyPartController implements Initializable {
             error.setContentText("Machine ID must be a number!");
         }
         if(errorNumber == 2){
-            error.setContentText("Company name must not include text, nut just numbers");
+            error.setContentText("Company name must not include text, nut just numbers!");
         }
         if(errorNumber == 3){
             error.setContentText("All fields must have content!");
