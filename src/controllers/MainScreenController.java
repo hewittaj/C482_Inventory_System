@@ -17,7 +17,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-//import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -94,6 +93,53 @@ public class MainScreenController implements Initializable {
         window.setScene(addPartScene);
         window.show();
     }
+    /**
+     * This method detects when the add product button is pushed and loads the 
+     * AddProduct screen
+     * @param event Event that is captured to detect the button push
+     * @throws IOException Exception that is caught if errors with screen loading
+     */
+    @FXML
+    public void addProductButtonPushed(ActionEvent event) throws IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AddProduct.fxml"));
+        AddProductController controller = new AddProductController(mainInventory);
+        loader.setController(controller);
+
+        //Set parent and scene
+        Parent addProductParent = loader.load();
+        Scene addProductScene = new Scene(addProductParent);
+
+        //This line gets the Stage information
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+        window.setScene(addProductScene);
+        window.show();
+    }
+    /**
+     * 
+     * @param event
+     * @throws IOException 
+     */
+    @FXML
+    public void modifyProductButtonPushed(ActionEvent event) throws IOException{
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ModifyProduct.fxml"));
+            ModifyProductController controller = new ModifyProductController(mainInventory);
+            loader.setController(controller);
+
+            //Set parent and scene
+            Parent modifyProductParent = loader.load();
+            Scene modifyProductScene = new Scene(modifyProductParent);
+
+            //This line gets the Stage information
+            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+            window.setScene(modifyProductScene);
+            window.show();
+        }catch(IOException e){
+            
+        }
+    }
     
     /**
      * TO DO
@@ -144,12 +190,10 @@ public class MainScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Create a new inventory that contains our parts and products and add test data
-        Inventory allInventory = new Inventory();
         
         //Add our parts to our table view and set it up
         partInventoryList.setAll(Inventory.getAllParts());
         partTableView.setItems(partInventoryList);
-        //partTableView.refresh(); possibly unecessary?
 
         partIdColumn.setCellValueFactory(new PropertyValueFactory<Part, Integer>("id"));
         partInventoryLevelColumn.setCellValueFactory(new PropertyValueFactory<Part, Integer>("stock"));
@@ -176,9 +220,10 @@ public class MainScreenController implements Initializable {
         Platform.exit();
     }
     /**
-     * 
-     * @param event 
+     * This method detects if the delete part button is pushed
+     * @param event Event that is caught to detect button push
      */
+    @FXML
     public void deletePartButtonPushed(ActionEvent event){
         this.errorNumber = 0;
         Part selectedPart = partTableView.getSelectionModel().getSelectedItem();
@@ -205,9 +250,14 @@ public class MainScreenController implements Initializable {
             }else{
                 return;
             }
-        }
-            
-        
+        }  
+    }
+    /**
+     * This method detects if the delete product button is pushed
+     * @param event Event that is caught to detect button push
+     */
+    @FXML
+    public void deleteProductButtonPushed(ActionEvent event){
         
     }
     

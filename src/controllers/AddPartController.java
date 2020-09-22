@@ -137,6 +137,7 @@ public class AddPartController implements Initializable {
      * Method that is ran when the save button is pushed
      * @param event Event that is caught to detect save button push
      */
+    @FXML
     public void saveButtonPushed(ActionEvent event){
         try{
             this.errorCode = 0;

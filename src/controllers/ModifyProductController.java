@@ -2,12 +2,18 @@ package controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import models.Inventory;
+import models.Part;
+import models.Product;
 
 /**
  * FXML Controller class
@@ -38,13 +44,19 @@ public class ModifyProductController implements Initializable {
     @FXML private Button productCancelButton;
     @FXML private TableView<?> modifyProductTopTableView;
     @FXML private TableView<?> modifyProductBottomTableView;
-
+    Inventory mainInventory;
+    ObservableList <Part> allParts = FXCollections.observableArrayList();
+    
+    public ModifyProductController(Inventory inv){
+        this.mainInventory = inv;
+    }
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        
     }    
     
 }

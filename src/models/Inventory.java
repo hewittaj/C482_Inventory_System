@@ -156,4 +156,17 @@ public class Inventory {
         }
         return maxId;
     }
+    /**
+     * Gets the last product Id number for adding a part functionality
+     * @return The product ID for the last product in the list
+     */
+    public static int getLastProductId(){
+        int maxId = 0;
+        for(Product product: allProducts){
+            if(product.getId() > maxId){
+                maxId = product.getId();
+            }
+        }
+        return maxId;
+    }
 }

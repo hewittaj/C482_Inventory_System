@@ -11,7 +11,6 @@ import javafx.fxml.FXML;
 public class Product {
     
     private ObservableList<Part> associatedParts; // TO DO
-    // TO DO
     private int id;// TO DO
     private String name;// TO DO
     private double price;// TO DO

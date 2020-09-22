@@ -62,17 +62,17 @@
                      </font>
                   </Label>
                   <TextField fx:id="procuctSearchBar" layoutX="194.0" layoutY="28.0" prefHeight="27.0" prefWidth="184.0" promptText="Search by Product ID or Name" />
-                  <Button fx:id="addProductButton" layoutX="184.0" layoutY="274.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="57.0" text="Add">
+                  <Button fx:id="addProductButton" layoutX="184.0" layoutY="274.0" mnemonicParsing="false" onAction="#addProductButtonPushed" prefHeight="20.0" prefWidth="57.0" text="Add">
                      <font>
                         <Font name="Arial" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="modifyProductButton" layoutX="256.0" layoutY="274.0" mnemonicParsing="false" prefHeight="20.0" text="Modify">
+                  <Button fx:id="modifyProductButton" layoutX="256.0" layoutY="274.0" mnemonicParsing="false" onAction="#modifyProductButtonPushed" prefHeight="20.0" text="Modify">
                      <font>
                         <Font name="Arial" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="deleteProductButton" layoutX="334.0" layoutY="274.0" mnemonicParsing="false" prefHeight="20.0" text="Delete">
+                  <Button fx:id="deleteProductButton" layoutX="334.0" layoutY="274.0" mnemonicParsing="false" onAction="#deleteProductButtonPushed" prefHeight="20.0" text="Delete">
                      <font>
                         <Font name="Arial" size="16.0" />
                      </font>
