@@ -84,9 +84,9 @@ public class mainProgram extends Application{
         
         //Add Products
         //int id, String name, double price, int stock, int min, int max
-        Product productOne = new Product(1001, "low end pc", 500.00, 3, 1, 20);
-        Product productTwo = new Product(1002, "mid range pc", 700.00, 4, 1, 15);
-        Product productThree = new Product(1003, "high end pc", 1000.00, 2, 1, 10);
+        Product productOne = new Product(1, "low end pc", 500.00, 3, 1, 20);
+        Product productTwo = new Product(2, "mid range pc", 700.00, 4, 1, 15);
+        Product productThree = new Product(3, "high end pc", 1000.00, 2, 1, 10);
         
         //Adding associated parts
         productOne.addAssociatedPart(testPartOne);

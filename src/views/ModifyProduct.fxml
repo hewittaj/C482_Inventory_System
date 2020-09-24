@@ -61,7 +61,7 @@
                   <TableColumn fx:id="productPriceTopColumn" prefWidth="114.0" text="Price/Cost per Unit" />
               </columns>
             </TableView>
-            <Button fx:id="productAddButton" layoutX="598.0" layoutY="207.0" mnemonicParsing="false" text="Add">
+            <Button fx:id="productAddButton" layoutX="598.0" layoutY="207.0" mnemonicParsing="false" onAction="#addAssociatedPart" text="Add">
                <font>
                   <Font name="Arial" size="13.0" />
                </font>
@@ -74,17 +74,17 @@
                   <TableColumn fx:id="productPriceBottomColumn" prefWidth="114.0" text="Price/Cost per Unit" />
                </columns>
             </TableView>
-            <Button fx:id="productRemoveButton" layoutX="514.0" layoutY="384.0" mnemonicParsing="false" text="Remove Associated Part">
+            <Button fx:id="productRemoveButton" layoutX="514.0" layoutY="384.0" mnemonicParsing="false" onAction="#removeAssociatedPart" text="Remove Associated Part">
                <font>
                   <Font name="Arial" size="13.0" />
                </font>
             </Button>
-            <Button fx:id="productSaveButton" layoutX="514.0" layoutY="423.0" mnemonicParsing="false" text="Save">
+            <Button fx:id="productSaveButton" layoutX="514.0" layoutY="423.0" mnemonicParsing="false" onAction="#saveButtonPushed" text="Save">
                <font>
                   <Font name="Arial" size="13.0" />
                </font>
             </Button>
-            <Button fx:id="productCancelButton" layoutX="608.0" layoutY="423.0" mnemonicParsing="false" text="Cancel">
+            <Button fx:id="productCancelButton" layoutX="608.0" layoutY="423.0" mnemonicParsing="false" onAction="#cancelButtonPushed" text="Cancel">
                <font>
                   <Font name="Arial" size="13.0" />
                </font>

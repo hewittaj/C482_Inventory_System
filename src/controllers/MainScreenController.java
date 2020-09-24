@@ -123,8 +123,20 @@ public class MainScreenController implements Initializable {
     @FXML
     public void modifyProductButtonPushed(ActionEvent event) throws IOException{
         try{
+            //Get selected product
+            Product productSelected = productTableView.getSelectionModel().getSelectedItem();
+            // If no product is selected
+            if(productSelected == null){
+                Alert noPartSelected = new Alert(Alert.AlertType.ERROR);
+                noPartSelected.setTitle("ERROR!");
+                noPartSelected.setHeaderText("NO PRODUCT SELECTED!");
+                noPartSelected.setContentText("A product needs to be selected to modify it!");
+                noPartSelected.showAndWait();
+                return;
+            }
+            
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ModifyProduct.fxml"));
-            ModifyProductController controller = new ModifyProductController(mainInventory);
+            ModifyProductController controller = new ModifyProductController(mainInventory, productSelected);
             loader.setController(controller);
 
             //Set parent and scene
@@ -258,7 +270,32 @@ public class MainScreenController implements Initializable {
      */
     @FXML
     public void deleteProductButtonPushed(ActionEvent event){
-        
+        this.errorNumber = 0;
+        Product selectedProduct = productTableView.getSelectionModel().getSelectedItem();
+        // If part list is empty
+        if(productInventoryList.isEmpty()){
+            errorThrown = true;
+            this.errorNumber = 1;
+            showAlert(errorNumber);
+        }
+        // If part list is not empty, but our selected part is null
+        if(selectedProduct == null && !productInventoryList.isEmpty()){
+            errorThrown = true;
+            this.errorNumber = 2;
+            showAlert(errorNumber);
+        }
+        if(this.errorNumber == 0){
+            Alert confirmDelete = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmDelete.setTitle("CONFIRM DELETE");
+            confirmDelete.setHeaderText("Are you sure you would like to delete this part?");
+            Optional<ButtonType> confirm = confirmDelete.showAndWait();
+            if(confirm.get() == ButtonType.OK){
+                productInventoryList.remove(selectedProduct);
+                mainInventory.deleteProduct(selectedProduct);
+            }else{
+                return;
+            }
+        }  
     }
     
     /**
@@ -279,10 +316,10 @@ public class MainScreenController implements Initializable {
             return;
         }
         if(errorNumber == 1){
-            alert.setContentText("Inventory list is empty!");
+            alert.setContentText("List is empty!");
         }
         if(errorNumber == 2){
-            alert.setContentText("No part selected!");
+            alert.setContentText("Nothing is selected!");
         }
         alert.showAndWait();
     }

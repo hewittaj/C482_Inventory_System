@@ -77,7 +77,7 @@
                <font>
                   <Font name="Arial" size="13.0" />
                </font></Button>
-            <Button fx:id="productCancelButton" layoutX="608.0" layoutY="423.0" mnemonicParsing="false" text="Cancel">
+            <Button fx:id="productCancelButton" layoutX="608.0" layoutY="423.0" mnemonicParsing="false" onAction="#cancelButtonPushed" text="Cancel">
                <font>
                   <Font name="Arial" size="13.0" />
                </font></Button>

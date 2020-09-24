@@ -178,6 +178,48 @@ public class AddProductController implements Initializable {
         }
         
     }
+    
+    /**
+     * This method takes us back to the main screen if the cancel button is pushed.
+     * Alert documentation https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Alert.AlertType.html
+     * @param event Event that is caught to detect cancel button pushed
+     */
+    @FXML
+    public void cancelButtonPushed(ActionEvent event){
+        try{
+            // Set up an alert
+            Alert cancelAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            cancelAlert.setTitle("CANCEL");
+            cancelAlert.setHeaderText("Are you sure you want to cancel?");
+            cancelAlert.setContentText("Click 'OK' to confirm.");
+            
+            Optional<ButtonType> decision = cancelAlert.showAndWait();
+            if(decision.get() == ButtonType.OK){
+                // For the .fxml in this one as well I deleted the controller fx:id 
+                // Set the scene for the Main Screen
+                // Load .fxml and set controller
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MainScreen.fxml"));
+                MainScreenController controller = new MainScreenController(mainInventory);
+                loader.setController(controller);
+
+                // Set parent and scene
+                Parent mainScreenParent = loader.load();
+                Scene mainScreenScene = new Scene(mainScreenParent);
+
+                // This line gets the Stage information
+                Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+
+                window.setScene(mainScreenScene);
+                window.show();
+            }else{
+                return;
+            }
+            
+        }catch(IOException e){
+            
+        }
+        
+    }
     /**
      * This method checks for errors and saves the new product we've created
      * @param event Event captured that detects if save button is pushed
