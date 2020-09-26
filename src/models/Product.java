@@ -36,6 +36,23 @@ public class Product {
         this.min = min;
         this.max = max;
     }
+    /**
+     * This method sets up the constructor for our Product if no inventory level is provided
+     * @param id Id of the product
+     * @param name Name of the product
+     * @param price Price of the product
+     * @param min Minimum allowable of the product
+     * @param max Maximum allowable of the product
+     */
+    public Product(int id, String name, double price, int min, int max){
+        this.associatedParts = FXCollections.observableArrayList();
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.stock = 0;
+        this.min = min;
+        this.max = max;
+    }
     
     /**
      * This method sets the Id of the Product

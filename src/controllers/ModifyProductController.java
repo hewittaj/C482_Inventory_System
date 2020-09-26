@@ -175,12 +175,6 @@ public class ModifyProductController implements Initializable {
         // Add our parts to our table view and set it up
         allParts.setAll(Inventory.getAllParts());
         
-        // Remove any associated parts from allowable parts to add
-        for(Part part: associatedParts){
-            if(allParts.contains(part)){
-                allParts.remove(part);
-            }
-        }
         modifyProductTopTableView.setItems(allParts);
         
         // Set up columns values
@@ -228,9 +222,7 @@ public class ModifyProductController implements Initializable {
             // Add our parts selected to a list of associated parts
             associatedParts.add(selectedPart);
             modifyProductBottomTableView.setItems(associatedParts);
-            // Remove selected part from the parts available and refresh
-            allParts.remove(selectedPart);
-            modifyProductTopTableView.refresh();
+
             // Set up columns
             productIdBottomColumn.setCellValueFactory(new PropertyValueFactory<Part, Integer>("id"));
             productInventoryBottomColumn.setCellValueFactory(new PropertyValueFactory<Part, Integer>("stock"));
@@ -264,9 +256,7 @@ public class ModifyProductController implements Initializable {
                 // Add our selected part back to our allparts list
                 // Remove our selected part from our associated parts list
                 associatedParts.remove(selectedPart); // Removing from selected parts
-                allParts.add(selectedPart); // Add part back to our main list
 
-                modifyProductTopTableView.setItems(allParts);// Refresh our top table view
                 modifyProductBottomTableView.setItems(associatedParts); //Refresh bottom table
 
                 // Remove selected part from the parts available and refresh
@@ -321,7 +311,7 @@ public class ModifyProductController implements Initializable {
     public void searchPart(ActionEvent event){
         // If there is no text in the search bar
         if(productSearchTextField.getText().isEmpty()){
-                return;
+            return;
         }
         
         // If search bar contains text (name)

@@ -2,6 +2,7 @@ package models;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 
 /**
  * This is the class that helps to construct an inventory for our Inventory
@@ -41,6 +42,11 @@ public class Inventory {
                 return allParts.get(i);
             }
         }
+        Alert notFound = new Alert(Alert.AlertType.ERROR);
+        notFound.setTitle("ERROR!");
+        notFound.setHeaderText("Not found!");
+        notFound.setContentText("No part found!");
+        notFound.showAndWait();
         return null;
     }
     
@@ -55,6 +61,11 @@ public class Inventory {
                 return allProducts.get(i);
             }
         }
+        Alert notFound = new Alert(Alert.AlertType.ERROR);
+        notFound.setTitle("ERROR!");
+        notFound.setHeaderText("Not found!");
+        notFound.setContentText("No product found!");
+        notFound.showAndWait();
         return null;
     }
     
@@ -70,7 +81,14 @@ public class Inventory {
                 returnedParts.add(part); 
             }
         }
-        
+        if(returnedParts.isEmpty()){
+            Alert notFound = new Alert(Alert.AlertType.ERROR);
+            notFound.setTitle("ERROR!");
+            notFound.setHeaderText("Not found!");
+            notFound.setContentText("No part found!");
+            notFound.showAndWait();
+            return null;
+        }
         return returnedParts;
     }
     
@@ -89,6 +107,13 @@ public class Inventory {
             if(product.getName().contains(productName)){
                 returnedProducts.add(product); 
             }
+        }
+        if(returnedProducts.isEmpty()){
+            Alert notFound = new Alert(Alert.AlertType.ERROR);
+            notFound.setTitle("ERROR!");
+            notFound.setHeaderText("Not found!");
+            notFound.setContentText("No product found!");
+            notFound.showAndWait();
         }
         return returnedProducts;
     }

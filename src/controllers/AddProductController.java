@@ -16,14 +16,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import models.Inventory;
-import static models.Inventory.lookupPart;
 import models.Part;
 import models.Product;
 
@@ -64,7 +62,7 @@ public class AddProductController implements Initializable {
     private ObservableList<Part> allParts = FXCollections.observableArrayList();
     private ObservableList<Part> associatedPartsList = FXCollections.observableArrayList();
     private ObservableList<Part> partsSelectedList = FXCollections.observableArrayList();
-    
+    private ObservableList<Product> allProducts = FXCollections.observableArrayList();
     /**
      * This method is the constructor for 
      * @param inv Inventory that is passed from screen to screen
@@ -82,6 +80,7 @@ public class AddProductController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Get next Id number and set the table that has all parts
+        allProducts.setAll(Inventory.getAllProducts());
         getNextIdNumber();
         setAllPartsTable();
     }    
@@ -329,6 +328,20 @@ public class AddProductController implements Initializable {
             errorThrown = true;
             return;
         }  
+        /**
+         * The following makes sure that the price of the product is greater than
+         * the sum of all the parts price. i.e. product price cannot be less than
+         * price of all the parts
+         */
+        double sumOfPartsPrices = 0;
+        for(Part part: associatedPartsList){
+            sumOfPartsPrices += part.getPrice();
+        }
+        if(Double.valueOf(productPriceTextField.getText()) < sumOfPartsPrices){
+            this.errorNumber = 7;
+            errorThrown = true;
+            return;
+        }
     }
     
     /**
@@ -361,6 +374,9 @@ public class AddProductController implements Initializable {
         if(this.errorNumber == 6){
             error.setContentText("Name of product can't contain numbers!");
         }
+        if(this.errorNumber == 7){
+            error.setContentText("Price of product cannot be less than sum of associated parts!");
+        }
         error.showAndWait();
         return;
     }
@@ -369,14 +385,21 @@ public class AddProductController implements Initializable {
      * @return Value returned is the size of our list of parts
      */
     public int getSizeOfAllParts(){
-        return allParts.size();
+        return allProducts.size();
     }
     
+    /**
+     * This method gets the size allProducts list
+     * @return Number of products currently in inventory
+     */
+    public int getSizeOfAllProducts(){
+        return allProducts.size();
+    }
     /**
      * Generates the next Id Number for a part we want to add
      */
     public void getNextIdNumber(){
-        int size = getSizeOfAllParts(); // Set the size
+        int size = getSizeOfAllProducts(); // Set the size
         
         if(size == 0){
             productIdTextField.setText("1");
@@ -385,13 +408,13 @@ public class AddProductController implements Initializable {
                 if(i == 0){ // Skip 0 as we don't want an ID of zero
                     continue;
                 }
-                if(lookupPart(i) == null){ // If part returned is null
+                if(Inventory.lookupProduct(i) == null){ // If part returned is null
                     productIdTextField.setText(String.valueOf(i)); // We can use the id as our number
                     break;// Break from loop
-                }else if(lookupPart(i) != null){ // If lookup part matches we continue in the loop  --- lookupPart(i).getId() == i
+                }else if(Inventory.lookupProduct(i) != null){ // If lookup part matches we continue in the loop  --- lookupPart(i).getId() == i
                     if(i == size){ // If we get to the last index and its not null we assign the value to the last part id + 1
                         // Otherwise we set the id to the last parts id + 1
-                        productIdTextField.setText(String.valueOf(Inventory.getLastPartId() + 1));
+                        productIdTextField.setText(String.valueOf(Inventory.getLastProductId() + 1));
                     }
                     continue; // If i does not equal the size of the list then continue in the loop
                 }    

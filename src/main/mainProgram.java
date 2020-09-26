@@ -82,6 +82,7 @@ public class mainProgram extends Application{
         Product productOne = new Product(1, "low end pc", 500.00, 3, 1, 20);
         Product productTwo = new Product(2, "mid range pc", 700.00, 4, 1, 15);
         Product productThree = new Product(3, "high end pc", 1000.00, 2, 1, 10);
+        Product productFour = new Product(4, "test default inventory", 100, 1, 15);
         
         // Adding associated parts
         productOne.addAssociatedPart(testPartOne);
@@ -100,5 +101,6 @@ public class mainProgram extends Application{
         inventory.addProduct(productOne);
         inventory.addProduct(productTwo);
         inventory.addProduct(productThree);
+        inventory.addProduct(productFour);
     }
 }

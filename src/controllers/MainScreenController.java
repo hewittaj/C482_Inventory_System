@@ -290,11 +290,19 @@ public class MainScreenController implements Initializable {
             showAlert(errorNumber);
         }
         
+        if(selectedProduct.getAllAssociatedParts() != null){
+            Alert hasAssociatedPart = new Alert(Alert.AlertType.ERROR);
+            hasAssociatedPart.setTitle("ERROR!");
+            hasAssociatedPart.setHeaderText("Product has associated part!");
+            hasAssociatedPart.setContentText("Product has associated part still!");
+            hasAssociatedPart.showAndWait();
+            return;
+        }
         // If no error is thrown
         if(this.errorNumber == 0){
             Alert confirmDelete = new Alert(Alert.AlertType.CONFIRMATION);
             confirmDelete.setTitle("CONFIRM DELETE");
-            confirmDelete.setHeaderText("Are you sure you would like to delete this part?");
+            confirmDelete.setHeaderText("Are you sure you would like to delete this product?");
             Optional<ButtonType> confirm = confirmDelete.showAndWait();
             if(confirm.get() == ButtonType.OK){
                 productInventoryList.remove(selectedProduct);
@@ -314,7 +322,7 @@ public class MainScreenController implements Initializable {
     public void searchProduct(ActionEvent event){
         // If no text is in the search bar
         if(productSearchBar.getText().isEmpty()){
-                return;
+            return;
         }
         
         // If search bar contains text (name)
@@ -346,7 +354,7 @@ public class MainScreenController implements Initializable {
     public void searchPart(ActionEvent event){
         // If no text is in the search bar
         if(partSearchBar.getText().isEmpty()){
-                return;
+            return;
         }
         
         // If search bar contains text (name)
