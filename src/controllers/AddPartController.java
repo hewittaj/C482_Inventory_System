@@ -303,7 +303,7 @@ public class AddPartController implements Initializable {
     /**
      * This method takes in an error number and creates an alert based on if it
      * errorNumber matching an if statement
-     * @param errorNumber 
+     * @param errorNumber Number that specifies which error occurred
      */
     public void showAlert(int errorNumber){
         //Initialize an alert instance

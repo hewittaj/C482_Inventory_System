@@ -402,6 +402,7 @@ public class MainScreenController implements Initializable {
     
     /**
      * This method shows an alert based on the error number
+     * @param errorNumber Number that specifies which error occurred
      */
     public void showAlert(int errorNumber){
         Alert alert = new Alert(Alert.AlertType.ERROR);

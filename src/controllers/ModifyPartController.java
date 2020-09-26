@@ -335,7 +335,7 @@ public class ModifyPartController implements Initializable {
     /**
      * This method takes in an error number and creates an alert based on if the
      * errorNumber matches 
-     * @param errorNumber 
+     * @param errorNumber Number that specifies which error occurred
      */
     public void showAlert(int errorNumber){
         //Initialize an alert instance
