@@ -52,7 +52,7 @@
                   <TextField fx:id="productMinTextField" layoutX="188.0" layoutY="153.0" prefWidth="85.0" />
                </children>
             </AnchorPane>
-            <TextField fx:id="productSearchTextField" disable="true" layoutX="493.0" layoutY="31.0" promptText="Search by Part ID or Name" />
+            <TextField fx:id="productSearchTextField" layoutX="493.0" layoutY="31.0" onMouseClicked="#resetPartTableAfterSearch" promptText="Search by Part ID or Name" />
             <TableView fx:id="modifyProductTopTableView" layoutX="321.0" layoutY="65.0" prefHeight="135.0" prefWidth="344.0">
               <columns>
                 <TableColumn fx:id="productIdTopColumn" prefWidth="47.0" text="Part ID" />
@@ -94,6 +94,7 @@
                   <Font name="Arial Bold" size="18.0" />
                </font>
             </Label>
+            <Button layoutX="432.0" layoutY="31.0" mnemonicParsing="false" onAction="#searchPart" text="Search" />
          </children>
       </AnchorPane>
    </children>

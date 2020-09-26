@@ -21,6 +21,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import models.InHouse;
 import models.Inventory;
@@ -46,14 +47,14 @@ public class MainScreenController implements Initializable {
     @FXML private TableColumn<Part, String> partNameColumn;
     @FXML private TableColumn<Part, Integer> partInventoryLevelColumn;
     @FXML private TableColumn<Part, Double> partPriceColumn;
-    @FXML private TextField partSearchBar;
+    @FXML private TextField partSearchBar = new TextField();
     @FXML private TableColumn<Product, Integer> productIdColumn;
     @FXML private TableColumn<Product, String> productNameColumn;
     @FXML private TableColumn<Product, Integer> productInventoryLevelColumn;
     @FXML private TableColumn<Product, Double> productPriceColumn;
     @FXML private TableView<Part> partTableView;
     @FXML private TableView<Product> productTableView;
-    @FXML private TextField procuctSearchBar;
+    @FXML private TextField productSearchBar = new TextField();
     Inventory mainInventory;
     int errorNumber;
     boolean errorThrown;
@@ -297,7 +298,85 @@ public class MainScreenController implements Initializable {
             }
         }  
     }
+    /**
+     * This method searches for the product specified in the text box
+     * (via id, or name)
+     * @param event
+     */
+    @FXML
+    public void searchProduct(ActionEvent event){
+        if(productSearchBar.getText().isEmpty()){
+                return;
+        }
+        // If search bar contains text (name)
+        if(productSearchBar.getText().matches("[a-zA-Z]+")){
+            productInventorySearchList.clear(); // Remove elements from any previous search
+            productInventorySearchList = mainInventory.lookupProduct(productSearchBar.getText().trim());
+            productTableView.setItems(productInventorySearchList);
+            productTableView.refresh(); 
+        }
+        // If search bar contains numbers (id)
+        if(productSearchBar.getText().matches("^[0-9]*$")){
+            int id = Integer.valueOf(productSearchBar.getText());
+            Product returnedProduct;
+            productInventorySearchList.clear(); // Remove elements from any previous search
+            returnedProduct = mainInventory.lookupProduct(id);
+            productInventorySearchList.add(returnedProduct);
+            productTableView.setItems(productInventorySearchList);
+            productTableView.refresh(); 
+        }
+    }
     
+    /**
+     * This method searches for the part specified in the text box 
+     * (via id, or name)
+     * @param event
+     */
+    @FXML
+    public void searchPart(ActionEvent event){
+        if(partSearchBar.getText().isEmpty()){
+                return;
+        }
+        // If search bar contains text (name)
+        if(partSearchBar.getText().matches("[a-zA-Z]+")){
+            partInventorySearchList.clear(); // Remove elements from any previous search
+            partInventorySearchList = mainInventory.lookupPart(partSearchBar.getText().trim());
+            partTableView.setItems(partInventorySearchList);
+            partTableView.refresh(); 
+        }
+        // If search bar contains numbers (id)
+        if(partSearchBar.getText().matches("^[0-9]*$")){
+            int id = Integer.valueOf(partSearchBar.getText());
+            Part returnedPart;
+            partInventorySearchList.clear(); // Remove elements from any previous search
+            returnedPart = mainInventory.lookupPart(id);
+            partInventorySearchList.add(returnedPart);
+            partTableView.setItems(partInventorySearchList);
+            partTableView.refresh(); 
+        }
+    }
+    
+    /**
+     * This method is ran when the product search bar is clicked to restore it
+     * @param event
+     */
+    @FXML
+    public void resetProductTableAfterSearch(MouseEvent event){
+        productSearchBar.setText("");
+        productTableView.setItems(productInventoryList);
+        productTableView.refresh();
+    }
+    
+    /**
+     * This method is ran when the part search bar is clicked to restore it
+     * @param event
+     */
+    @FXML
+    public void resetPartTableAfterSearch(MouseEvent event){
+        partSearchBar.setText("");
+        partTableView.setItems(partInventoryList);
+        partTableView.refresh();
+    }
     /**
      * This method is the logic for checking if an error was thrown
      */

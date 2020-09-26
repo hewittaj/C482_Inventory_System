@@ -3,8 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/Users/alexhewitt/NetBeansProjects/AlexHewitt_InventorySystem/src/controllers/AddProductController.java</file>
             <file>file:/Users/alexhewitt/NetBeansProjects/AlexHewitt_InventorySystem/src/main/mainProgram.java</file>
+            <file>file:/Users/alexhewitt/NetBeansProjects/AlexHewitt_InventorySystem/src/models/Product.java</file>
+            <file>file:/Users/alexhewitt/NetBeansProjects/AlexHewitt_InventorySystem/src/models/Outsourced.java</file>
+            <file>file:/Users/alexhewitt/NetBeansProjects/AlexHewitt_InventorySystem/src/models/InHouse.java</file>
+            <file>file:/Users/alexhewitt/NetBeansProjects/AlexHewitt_InventorySystem/src/models/Inventory.java</file>
             <file>file:/Users/alexhewitt/NetBeansProjects/AlexHewitt_InventorySystem/src/controllers/MainScreenController.java</file>
+            <file>file:/Users/alexhewitt/NetBeansProjects/AlexHewitt_InventorySystem/src/controllers/ModifyProductController.java</file>
+            <file>file:/Users/alexhewitt/NetBeansProjects/AlexHewitt_InventorySystem/src/controllers/AddPartController.java</file>
+            <file>file:/Users/alexhewitt/NetBeansProjects/AlexHewitt_InventorySystem/src/controllers/ModifyPartController.java</file>
         </group>
     </open-files>
 </project-private>

@@ -65,7 +65,7 @@ public class Inventory {
     public static ObservableList<Part> lookupPart(String partName){
         ObservableList<Part> returnedParts = FXCollections.observableArrayList();
         for(Part part: allParts){
-            if(part.getName().equals(partName)){
+            if(part.getName().contains(partName)){
                 returnedParts.add(part); 
             }
         }
@@ -79,9 +79,13 @@ public class Inventory {
      * @return 
      */
     public static ObservableList<Product> lookupProduct(String productName){
+        if(allProducts.isEmpty()){
+            return null;
+        }
+        
         ObservableList<Product> returnedProducts = FXCollections.observableArrayList();
         for(Product product: allProducts){
-            if(product.getName().equals(product)){
+            if(product.getName().contains(productName)){
                 returnedProducts.add(product); 
             }
         }

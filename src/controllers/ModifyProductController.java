@@ -21,6 +21,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import models.Inventory;
 import models.Part;
@@ -62,6 +63,7 @@ public class ModifyProductController implements Initializable {
     boolean errorThrown = false;
     ObservableList <Part> allParts = FXCollections.observableArrayList();
     ObservableList <Part> associatedParts = FXCollections.observableArrayList();
+    ObservableList<Part> partInventorySearchList = FXCollections.observableArrayList();
     
     public ModifyProductController(Inventory inv, Product selectedProduct){
         this.mainInventory = inv;
@@ -74,7 +76,7 @@ public class ModifyProductController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // Get current associated parts
         associatedParts.setAll(productSelected.getAllAssociatedParts());
-        
+        productSearchTextField.setText("");
         setUpProductInfo();
         setAllPartsTable();
         setAssociatedPartsTable();
@@ -304,6 +306,46 @@ public class ModifyProductController implements Initializable {
     }
     
     /**
+     * This method searches for the part specified in the text box 
+     * (via id, or name)
+     * @param event
+     */
+    @FXML
+    public void searchPart(ActionEvent event){
+        if(productSearchTextField.getText().isEmpty()){
+                return;
+        }
+        // If search bar contains text (name)
+        if(productSearchTextField.getText().matches("[a-zA-Z]+")){
+            partInventorySearchList.clear(); // Remove elements from any previous search
+            partInventorySearchList = mainInventory.lookupPart(productSearchTextField.getText().trim());
+            modifyProductTopTableView.setItems(partInventorySearchList);
+            modifyProductTopTableView.refresh(); 
+        }
+        // If search bar contains numbers (id)
+        if(productSearchTextField.getText().matches("^[0-9]*$")){
+            int id = Integer.valueOf(productSearchTextField.getText());
+            Part returnedPart;
+            partInventorySearchList.clear(); // Remove elements from any previous search
+            returnedPart = mainInventory.lookupPart(id);
+            partInventorySearchList.add(returnedPart);
+            modifyProductTopTableView.setItems(partInventorySearchList);
+            modifyProductTopTableView.refresh(); 
+        }
+    }
+    
+    /**
+     * This method is ran when the part search bar is clicked to restore it
+     * @param event
+     */
+    @FXML
+    public void resetPartTableAfterSearch(MouseEvent event){
+        productSearchTextField.setText("");
+        modifyProductTopTableView.setItems(allParts);
+        modifyProductTopTableView.refresh();
+    }
+    
+    /**
      * This method checks for errors in adding a product/part
      */
     public void checkForErrors(){
@@ -367,6 +409,27 @@ public class ModifyProductController implements Initializable {
             errorThrown = true;
             return;
         }  
+        /**
+         * If the inventory value is greater than the max value an error is thrown
+         */
+        if(Integer.valueOf(productInvTextField.getText()) > Integer.valueOf(productMaxTextField.getText())){
+            this.errorNumber = 7;
+            errorThrown = true;
+            return;
+        }
+        
+        /**
+         * If the inventory value is less than the min value an error is thrown
+         */
+        if(Integer.valueOf(productInvTextField.getText()) < Integer.valueOf(productMinTextField.getText())){
+            this.errorNumber = 8;
+            errorThrown = true;
+            return;
+        }if(Integer.valueOf(productMinTextField.getText()) > Integer.valueOf(productMaxTextField.getText())){
+            this.errorNumber = 9;
+            errorThrown = true;
+            return;
+        }
     }
     
     /**
@@ -400,6 +463,15 @@ public class ModifyProductController implements Initializable {
         }
         if(this.errorNumber == 6){
             error.setContentText("Name of product can't contain numbers!");
+        }
+        if(this.errorNumber == 7){
+            error.setContentText("Inventory cannot be greater than max!");
+        }
+        if(this.errorNumber == 8){
+            error.setContentText("Inventory cannot be less than min!");
+        }
+        if(this.errorNumber == 9){
+            error.setContentText("Min cannot be greater than max!");
         }
         error.showAndWait();
         return;
