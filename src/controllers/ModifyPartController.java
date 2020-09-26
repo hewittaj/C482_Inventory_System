@@ -25,7 +25,6 @@ import models.Part;
 
 /**
  * FXML Controller class for the Modify Part screen
- *
  * @author alexhewitt
  */
 public class ModifyPartController implements Initializable {
@@ -48,7 +47,7 @@ public class ModifyPartController implements Initializable {
     boolean errorThrown = false;
 
     /**
-     * This method initializes the ModifyPartController
+     * This method initializes the ModifyPartController constructor
      * @param inventory Inventory that we pass from screen to screen
      * @param partSelectedByUser Part selected by user on the MainScreenController
      */
@@ -56,7 +55,7 @@ public class ModifyPartController implements Initializable {
         this.mainInventory = inventory;
         this.partSelected = partSelectedByUser;
     }
-    //CREATE TWO METHODS FOR DETECTING WHEN SWITCHING FROM OUTSOURCED TO INHOUSE AND UPDATE THEIR TYPE
+    
     /**
      * Initializes the controller class and detects if part selected is an instance
      * of InHouse or Outsourced.
@@ -68,7 +67,8 @@ public class ModifyPartController implements Initializable {
         // Initialize our values of the selected part        
         // If our partSelected is an outsourced part or inhouse, we do different things
         if(partSelected instanceof Outsourced){
-            //We must create an casted Outsourced Part object otherwise we can't call getCompanyName()
+            
+            // We must create an casted Outsourced Part object otherwise we can't call getCompanyName()
             Outsourced outsourced = (Outsourced) this.partSelected;
             this.outsourcedRadioButton.setSelected(true);
             this.partIdTextField.setText(String.valueOf(outsourced.getId()));
@@ -81,7 +81,8 @@ public class ModifyPartController implements Initializable {
             this.partSwappableTextField.setText(outsourced.getCompanyName());
                     
         }
-        //If our part is an instance of InHouse...
+        
+        // If our part is an instance of InHouse...
         if(partSelected instanceof InHouse){
             InHouse inHouse = (InHouse) this.partSelected;
             this.inHouseRadioButton.setSelected(true);
@@ -93,8 +94,7 @@ public class ModifyPartController implements Initializable {
             this.partMinTextField.setText(String.valueOf(inHouse.getMin()));
             this.partSwappableLabel.setText("Machine ID");
             this.partSwappableTextField.setText(String.valueOf(inHouse.getMachineId()));
-        }
-        
+        } 
     }
     
     /**
@@ -131,48 +131,47 @@ public class ModifyPartController implements Initializable {
             cancelAlert.setTitle("CANCEL");
             cancelAlert.setHeaderText("Are you sure you want to cancel?");
             cancelAlert.setContentText("Click 'OK' to confirm.");
-            
             Optional<ButtonType> decision = cancelAlert.showAndWait();
+            
+            // If the user's decision is 'OK'
             if(decision.get() == ButtonType.OK){
                 // For the .fxml in this one as well I deleted the controller fx:id 
-            // Set the scene for the Main Screen
-            // Load .fxml and set controller
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MainScreen.fxml"));
-            MainScreenController controller = new MainScreenController(mainInventory);
-            loader.setController(controller);
-            
-            // Set parent and scene
-            Parent mainScreenParent = loader.load();
-            Scene mainScreenScene = new Scene(mainScreenParent);
-            
-            // This line gets the Stage information
-            Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+                // Set the scene for the Main Screen
+                // Load .fxml and set controller
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MainScreen.fxml"));
+                MainScreenController controller = new MainScreenController(mainInventory);
+                loader.setController(controller);
 
-            window.setScene(mainScreenScene);
-            window.show();
+                // Set parent and scene
+                Parent mainScreenParent = loader.load();
+                Scene mainScreenScene = new Scene(mainScreenParent);
+
+                // This line gets the Stage information
+                Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+                window.setScene(mainScreenScene);
+                window.show();
             }else{
                 return;
-            }
-            
+            }   
         }catch(IOException e){
             
-        }
-        
+        } 
     }
     
     /**
      * This method takes the updated information that has been modified and passes
      * it to the main screen/updates it.
-     * @param event 
+     * @param event Event that is caught to detect if the save button is pushed
      */
     @FXML
     public void saveButtonPushed(ActionEvent event){
         try{
             // If the inhouse radio button is selected and the part is currently an outsourced part
             // Will check for errors first and if an error is thrown it will show the alert
-            this.errorCode = 0; //reset to zero for no error thrown
+            this.errorCode = 0; // Reset to zero for no error thrown
             checkForErrors();
             showAlert(errorCode);
+            
             if(errorCode == 0){
                 if(inHouseRadioButton.isSelected() && (partSelected instanceof Outsourced)){
                     updateToInHouse();
@@ -209,13 +208,11 @@ public class ModifyPartController implements Initializable {
 
                 // This line gets the Stage information
                 Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
                 window.setScene(mainScreenScene);
                 window.show();
             }
         }catch(IOException e){
-            
-            
+               
         }
     }
     
@@ -254,7 +251,7 @@ public class ModifyPartController implements Initializable {
     }
     
     /**
-     * This method takes in an errorNumber and outputs a certain alert based on the number
+     * This method checks for errors in the program
      */
     public void checkForErrors(){
         
@@ -267,6 +264,7 @@ public class ModifyPartController implements Initializable {
             this.errorCode = 1;
             return;
         }
+        
         /*
         If the outsourced radio button is selected and the textfield contains numbers
         we throw an error as it can only contain letters
@@ -335,8 +333,8 @@ public class ModifyPartController implements Initializable {
     }
     
     /**
-     * This method takes in an error number and creates an alert based on if it
-     * errorNumber matching an if statement
+     * This method takes in an error number and creates an alert based on if the
+     * errorNumber matches 
      * @param errorNumber 
      */
     public void showAlert(int errorNumber){

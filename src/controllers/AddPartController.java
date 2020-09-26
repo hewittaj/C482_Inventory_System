@@ -27,13 +27,12 @@ import models.Outsourced;
 import models.Part;
 
 /**
- * FXML Controller class
- *
+ * FXML Controller class for the Add Part Screen
  * @author alexhewitt
  */
 public class AddPartController implements Initializable {
     
-    //Initialize the FXML portions of the add part screen
+    // Initialize the FXML portions of the add part screen
     @FXML private RadioButton inHouseRadioButton;
     @FXML private RadioButton outsourcedRadioButton;
     @FXML private Label partSwappableLabel;
@@ -82,6 +81,8 @@ public class AddPartController implements Initializable {
     
     /**
      * Initializes the controller class.
+     * @param url N/a
+     * @param rb N/a
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -105,10 +106,11 @@ public class AddPartController implements Initializable {
             cancelAlert.setTitle("CANCEL");
             cancelAlert.setHeaderText("Are you sure you want to cancel?");
             cancelAlert.setContentText("Click 'OK' to confirm.");
-            
             Optional<ButtonType> decision = cancelAlert.showAndWait();
+            
+            // If the user's decision is OK the following code is ran
             if(decision.get() == ButtonType.OK){
-                // For the .fxml in this one as well I deleted the controller fx:id 
+
                 // Set the scene for the Main Screen
                 // Load .fxml and set controller
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MainScreen.fxml"));
@@ -121,28 +123,31 @@ public class AddPartController implements Initializable {
 
                 // This line gets the Stage information
                 Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
                 window.setScene(mainScreenScene);
                 window.show();
+                
             }else{
                 return;
             }
             
         }catch(IOException e){
             
-        }
-        
+        }   
     }
+    
     /**
-     * Method that is ran when the save button is pushed
+     * Method that is ran when the save button is pushed to save the part we
+     * would like to add
      * @param event Event that is caught to detect save button push
      */
     @FXML
     public void saveButtonPushed(ActionEvent event){
         try{
+            // Error code is reset and then we check for errors and show any found
             this.errorCode = 0;
             checkForErrors();
             showAlert(errorCode);
+            
             if(this.errorCode == 0){
                 if(outsourcedRadioButton.isSelected()){
                     addOutsourcedPart();
@@ -150,7 +155,7 @@ public class AddPartController implements Initializable {
                 if(inHouseRadioButton.isSelected()){
                     addInHousePart();
                 }
-                // For the .fxml in this one as well I deleted the controller fx:id 
+
                 // Set the scene for the Main Screen
                 // Load .fxml and set controller
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MainScreen.fxml"));
@@ -163,7 +168,6 @@ public class AddPartController implements Initializable {
 
                 // This line gets the Stage information
                 Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
                 window.setScene(mainScreenScene);
                 window.show();
             } 
@@ -174,7 +178,7 @@ public class AddPartController implements Initializable {
     
     /**
      * Gets the size of allParts
-     * @return 
+     * @return Returns the size of how many parts are in our inventory
      */
     public int getSizeOfAllParts(){
         return allParts.size();
@@ -213,18 +217,19 @@ public class AddPartController implements Initializable {
     public void checkForErrors(){
         
         /*
-        If the inhouse radio button is selected and the textfield contains letters
-        we throw an error as it can only contain numbers
-        */ 
+         *If the inhouse radio button is selected and the textfield contains letters
+         *we throw an error as it can only contain numbers
+         */ 
         if(inHouseRadioButton.isSelected() && partSwappableTextField.getText().matches("[a-zA-Z]+")){
             errorThrown = true;
             this.errorCode = 1;
             return;
         }
+        
         /*
-        If the outsourced radio button is selected and the textfield contains numbers
-        we throw an error as it can only contain letters
-        */ 
+         *If the outsourced radio button is selected and the textfield contains numbers
+         *we throw an error as it can only contain letters
+         */ 
         if(outsourcedRadioButton.isSelected() && partSwappableTextField.getText().matches("^[0-9]*$")){
             errorThrown = true;
             this.errorCode = 2;
@@ -232,8 +237,8 @@ public class AddPartController implements Initializable {
         }
         
         /*
-        If the content of any text field is empty an error is thrown
-        */
+         *If the content of any text field is empty an error is thrown
+         */
         if(partNameTextField.getText().isEmpty() || 
                 partInvTextField.getText().isEmpty() ||
                 partPriceTextField.getText().isEmpty() ||
@@ -247,8 +252,8 @@ public class AddPartController implements Initializable {
         }
         
         /*
-        If inventory, max, or min field are less than zero an error is thrown
-        */
+         *If inventory, max, or min field are less than zero an error is thrown
+         */
         if(Integer.valueOf(partInvTextField.getText()) < 0 ||
                 Integer.valueOf(partMaxTextField.getText()) < 0 ||
                 Integer.valueOf(partMinTextField.getText()) < 0){
@@ -257,7 +262,7 @@ public class AddPartController implements Initializable {
             return;
         }
         
-        /**
+        /*
          * If the value of our inventory is greater than max allowable throw an error
          */
         else if(Integer.valueOf(partInvTextField.getText()) > 
@@ -267,7 +272,7 @@ public class AddPartController implements Initializable {
             return;
         }
         
-        /**
+        /*
          * If the value of our inventory is less than min allowable throw an error
          */
         else if(Integer.valueOf(partInvTextField.getText()) < 
@@ -276,7 +281,7 @@ public class AddPartController implements Initializable {
             this.errorCode = 6;
             return;
         }
-        /**
+        /*
          * If the value of our min field is greater than our max field
          */
         else if(Integer.valueOf(partMinTextField.getText()) > 
@@ -285,6 +290,9 @@ public class AddPartController implements Initializable {
             this.errorCode = 7;
             return;
         }
+        /*
+         *If both the Outsourced or InHouse radio button are not selected
+         */
         if(!outsourcedRadioButton.isSelected() && !inHouseRadioButton.isSelected()){
             errorThrown = true;
             this.errorCode = 8;

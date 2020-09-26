@@ -23,9 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import models.InHouse;
 import models.Inventory;
-import models.Outsourced;
 import models.Part;
 import models.Product;
 
@@ -35,7 +33,7 @@ import models.Product;
  */
 public class MainScreenController implements Initializable {
     
-    //FXML Instantiation
+    // FXML Instantiation
     @FXML private Button addPartButton;
     @FXML private Button modifyPartButton;
     @FXML private Button deletePartButton;
@@ -63,10 +61,9 @@ public class MainScreenController implements Initializable {
     private ObservableList<Product> productInventoryList = FXCollections.observableArrayList();
     private ObservableList<Part> partInventorySearchList = FXCollections.observableArrayList();
     private ObservableList<Product> productInventorySearchList = FXCollections.observableArrayList();
-    //FXML Method Instantiation
 
     /**
-     * 
+     * This method sets up our constructor for the Main Screen Controller
      * @param inventory Takes in an inventory instance and initializes it for the controller
      */
     public MainScreenController(Inventory inventory) {
@@ -74,26 +71,27 @@ public class MainScreenController implements Initializable {
     }
     
     /**
-     *
+     * This method detects if the add part button is pushed and loads the screen
      * @param event Catches events that happen in order to capture button push
-     * @throws java.io.IOException Exception that is thrown if an IO exception is shown
+     * @throws java.io.IOException Exception that is thrown if an IO exception is found
      */
     @FXML
     public void addPartButtonPushed(ActionEvent event) throws IOException{
+        // Loader that loads up our AddPart fxml file
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AddPart.fxml"));
         AddPartController controller = new AddPartController(mainInventory);
         loader.setController(controller);
 
-        //Set parent and scene
+        // Set parent and scene
         Parent addPartParent = loader.load();
         Scene addPartScene = new Scene(addPartParent);
 
-        //This line gets the Stage information
+        // This line gets the Stage information
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
         window.setScene(addPartScene);
         window.show();
     }
+    
     /**
      * This method detects when the add product button is pushed and loads the 
      * AddProduct screen
@@ -102,30 +100,32 @@ public class MainScreenController implements Initializable {
      */
     @FXML
     public void addProductButtonPushed(ActionEvent event) throws IOException{
+        // Loader that loads our Add Product fxml file
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/AddProduct.fxml"));
         AddProductController controller = new AddProductController(mainInventory);
         loader.setController(controller);
 
-        //Set parent and scene
+        // Set parent and scene
         Parent addProductParent = loader.load();
         Scene addProductScene = new Scene(addProductParent);
 
-        //This line gets the Stage information
+        // This line gets the Stage information
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
         window.setScene(addProductScene);
         window.show();
     }
+    
     /**
-     * 
-     * @param event
-     * @throws IOException 
+     * This method detects if the modify product button is pushed and loads the screen
+     * @param event Event that is captured to detect if the modify button is pushed
+     * @throws IOException Exception that is thrown if an IO exception is found
      */
     @FXML
     public void modifyProductButtonPushed(ActionEvent event) throws IOException{
         try{
-            //Get selected product
+            // Get selected product
             Product productSelected = productTableView.getSelectionModel().getSelectedItem();
+            
             // If no product is selected
             if(productSelected == null){
                 Alert noPartSelected = new Alert(Alert.AlertType.ERROR);
@@ -135,7 +135,7 @@ public class MainScreenController implements Initializable {
                 noPartSelected.showAndWait();
                 return;
             }
-            
+            // Loader setup for loading our modify product fxml file
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ModifyProduct.fxml"));
             ModifyProductController controller = new ModifyProductController(mainInventory, productSelected);
             loader.setController(controller);
@@ -146,7 +146,6 @@ public class MainScreenController implements Initializable {
 
             //This line gets the Stage information
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
             window.setScene(modifyProductScene);
             window.show();
         }catch(IOException e){
@@ -155,15 +154,14 @@ public class MainScreenController implements Initializable {
     }
     
     /**
-     * TO DO
-     * @param event
-     * @throws IOException 
+     * This method detects if the modify part button is pushed and loads the screen
+     * @param event Event that is captured to detect if the button is pushed
+     * @throws IOException Exception caught that detects any IO exceptions
      */
     @FXML
     public void modifyPartButtonPushed(ActionEvent event) throws IOException{
         try{
-            //TO DO SET UP ERRORS IF NO PART SELECTED
-            //For the .fxml in this one as well I deleted the controller fx:id 
+
             //Set the scene for the ModifyPart Screen
             Part selectedPart = partTableView.getSelectionModel().getSelectedItem();
             
@@ -176,18 +174,17 @@ public class MainScreenController implements Initializable {
                 noPartSelected.showAndWait();
                 return;
             }
-            //Load .fxml and set controller
+            // Load .fxml and set controller
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ModifyPart.fxml"));
             ModifyPartController controller = new ModifyPartController(mainInventory, selectedPart);
             loader.setController(controller);
             
-            //Set parent and scene
+            // Set parent and scene
             Parent modifyPartParent = loader.load();
             Scene modifyPartScene = new Scene(modifyPartParent);
             
-            //This line gets the Stage information
+            // This line gets the Stage information
             Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
             window.setScene(modifyPartScene);
             window.show();
         }catch(IOException e){
@@ -197,27 +194,29 @@ public class MainScreenController implements Initializable {
 
     /**
      * Initializes the controller class.
-     * @param url
-     * @param rb
+     * @param url N/a
+     * @param rb N/a
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Create a new inventory that contains our parts and products and add test data
         
-        //Add our parts to our table view and set it up
+        // Add our parts to our table view and set it up
         partInventoryList.setAll(Inventory.getAllParts());
         partTableView.setItems(partInventoryList);
 
+        // Set the table columns up
         partIdColumn.setCellValueFactory(new PropertyValueFactory<Part, Integer>("id"));
         partInventoryLevelColumn.setCellValueFactory(new PropertyValueFactory<Part, Integer>("stock"));
         partNameColumn.setCellValueFactory(new PropertyValueFactory<Part, String>("name"));
         partPriceColumn.setCellValueFactory(new PropertyValueFactory<Part, Double>("price"));
         
         
-        //Add our products to our table view and set it up
+        // Add our products to our table view and set it up
         productInventoryList.setAll(Inventory.getAllProducts());
         productTableView.setItems(productInventoryList);
 
+        // Set the table columns up
         productIdColumn.setCellValueFactory(new PropertyValueFactory<Product, Integer>("id"));
         productInventoryLevelColumn.setCellValueFactory(new PropertyValueFactory<Product, Integer>("stock"));
         productNameColumn.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
@@ -225,15 +224,16 @@ public class MainScreenController implements Initializable {
     }
     
     /**
-     * 
+     * This method detects if the exit button is pushed and will exit the program 
      * @param event Event that is caught if exit button is pushed
      */
     @FXML
     public void exitButtonPushed(ActionEvent event){
         Platform.exit();
     }
+    
     /**
-     * This method detects if the delete part button is pushed
+     * This method detects if the delete part button is pushed and will delete a part
      * @param event Event that is caught to detect button push
      */
     @FXML
@@ -246,12 +246,14 @@ public class MainScreenController implements Initializable {
             this.errorNumber = 1;
             showAlert(errorNumber);
         }
+        
         // If part list is not empty, but our selected part is null
         if(selectedPart == null && !partInventoryList.isEmpty()){
             errorThrown = true;
             this.errorNumber = 2;
             showAlert(errorNumber);
         }
+        // If no errors thrown
         if(this.errorNumber == 0){
             Alert confirmDelete = new Alert(Alert.AlertType.CONFIRMATION);
             confirmDelete.setTitle("CONFIRM DELETE");
@@ -265,6 +267,7 @@ public class MainScreenController implements Initializable {
             }
         }  
     }
+    
     /**
      * This method detects if the delete product button is pushed
      * @param event Event that is caught to detect button push
@@ -279,12 +282,15 @@ public class MainScreenController implements Initializable {
             this.errorNumber = 1;
             showAlert(errorNumber);
         }
+        
         // If part list is not empty, but our selected part is null
         if(selectedProduct == null && !productInventoryList.isEmpty()){
             errorThrown = true;
             this.errorNumber = 2;
             showAlert(errorNumber);
         }
+        
+        // If no error is thrown
         if(this.errorNumber == 0){
             Alert confirmDelete = new Alert(Alert.AlertType.CONFIRMATION);
             confirmDelete.setTitle("CONFIRM DELETE");
@@ -298,16 +304,19 @@ public class MainScreenController implements Initializable {
             }
         }  
     }
+    
     /**
      * This method searches for the product specified in the text box
      * (via id, or name)
-     * @param event
+     * @param event Event that is caught to detect if search button is pushed
      */
     @FXML
     public void searchProduct(ActionEvent event){
+        // If no text is in the search bar
         if(productSearchBar.getText().isEmpty()){
                 return;
         }
+        
         // If search bar contains text (name)
         if(productSearchBar.getText().matches("[a-zA-Z]+")){
             productInventorySearchList.clear(); // Remove elements from any previous search
@@ -315,6 +324,7 @@ public class MainScreenController implements Initializable {
             productTableView.setItems(productInventorySearchList);
             productTableView.refresh(); 
         }
+        
         // If search bar contains numbers (id)
         if(productSearchBar.getText().matches("^[0-9]*$")){
             int id = Integer.valueOf(productSearchBar.getText());
@@ -330,13 +340,15 @@ public class MainScreenController implements Initializable {
     /**
      * This method searches for the part specified in the text box 
      * (via id, or name)
-     * @param event
+     * @param event Event that is caught to detect if the search button is pushed
      */
     @FXML
     public void searchPart(ActionEvent event){
+        // If no text is in the search bar
         if(partSearchBar.getText().isEmpty()){
                 return;
         }
+        
         // If search bar contains text (name)
         if(partSearchBar.getText().matches("[a-zA-Z]+")){
             partInventorySearchList.clear(); // Remove elements from any previous search
@@ -344,6 +356,7 @@ public class MainScreenController implements Initializable {
             partTableView.setItems(partInventorySearchList);
             partTableView.refresh(); 
         }
+        
         // If search bar contains numbers (id)
         if(partSearchBar.getText().matches("^[0-9]*$")){
             int id = Integer.valueOf(partSearchBar.getText());
@@ -357,8 +370,9 @@ public class MainScreenController implements Initializable {
     }
     
     /**
-     * This method is ran when the product search bar is clicked to restore it
-     * @param event
+     * This method is ran when the product search bar is clicked to reset the 
+     * table view
+     * @param event Event that is caught to detect mouse click
      */
     @FXML
     public void resetProductTableAfterSearch(MouseEvent event){
@@ -368,8 +382,9 @@ public class MainScreenController implements Initializable {
     }
     
     /**
-     * This method is ran when the part search bar is clicked to restore it
-     * @param event
+     * This method is ran when the part search bar is clicked to reset the table
+     * view
+     * @param event Event that is caught to detect mouse click
      */
     @FXML
     public void resetPartTableAfterSearch(MouseEvent event){
@@ -377,6 +392,7 @@ public class MainScreenController implements Initializable {
         partTableView.setItems(partInventoryList);
         partTableView.refresh();
     }
+    
     /**
      * This method is the logic for checking if an error was thrown
      */
@@ -391,6 +407,7 @@ public class MainScreenController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("ERROR");
         alert.setHeaderText("Error has occured");
+        
         if(errorNumber == 0){
             return;
         }

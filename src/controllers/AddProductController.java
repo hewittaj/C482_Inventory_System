@@ -28,8 +28,7 @@ import models.Part;
 import models.Product;
 
 /**
- * FXML Controller class
- *
+ * FXML Controller class that controls the Add Product Screen
  * @author alexhewitt
  */
 public class AddProductController implements Initializable {
@@ -68,7 +67,7 @@ public class AddProductController implements Initializable {
     
     /**
      * This method is the constructor for 
-     * @param inv 
+     * @param inv Inventory that is passed from screen to screen
      */
     public AddProductController(Inventory inv){
         this.mainInventory = inv;
@@ -82,6 +81,7 @@ public class AddProductController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        // Get next Id number and set the table that has all parts
         getNextIdNumber();
         setAllPartsTable();
     }    
@@ -118,7 +118,7 @@ public class AddProductController implements Initializable {
             nullPart.showAndWait();
             return;
         }
-        
+        // If no error detected
         if(errorNumber == 0){
             // Add our selected part to a list of selected parts
             // Add our parts selected to a list of associated parts
@@ -145,8 +145,9 @@ public class AddProductController implements Initializable {
         removeAlert.setTitle("REMOVE");
         removeAlert.setHeaderText("Are you sure you want to remove the associated part?");
         removeAlert.setContentText("Click 'OK' to confirm.");
-
         Optional<ButtonType> decision = removeAlert.showAndWait();
+        
+        // If the user chooses 'OK'
         if(decision.get() == ButtonType.OK){
             // Because parts aren't associated to product until save button pushed
             // there is no need to remove associated part from product
@@ -154,6 +155,7 @@ public class AddProductController implements Initializable {
             selectedPart = addProductBottomTableView.getSelectionModel().getSelectedItem();
             checkForErrors();
             showAlert(errorNumber);
+            
             if(errorNumber == 0){
                 // Add our selected part back to our allparts list
                 // Remove our selected part from our associated parts list
@@ -173,10 +175,8 @@ public class AddProductController implements Initializable {
                 productInventoryBottomColumn.setCellValueFactory(new PropertyValueFactory<Part, Integer>("stock"));
                 productNameBottomColumn.setCellValueFactory(new PropertyValueFactory<Part, String>("name"));
                 productPriceBottomColumn.setCellValueFactory(new PropertyValueFactory<Part, Double>("price"));
-
              }
-        }
-        
+        }    
     }
     
     /**
@@ -192,10 +192,11 @@ public class AddProductController implements Initializable {
             cancelAlert.setTitle("CANCEL");
             cancelAlert.setHeaderText("Are you sure you want to cancel?");
             cancelAlert.setContentText("Click 'OK' to confirm.");
-            
             Optional<ButtonType> decision = cancelAlert.showAndWait();
+            
+            // If user chooses 'OK'
             if(decision.get() == ButtonType.OK){
-                // For the .fxml in this one as well I deleted the controller fx:id 
+
                 // Set the scene for the Main Screen
                 // Load .fxml and set controller
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MainScreen.fxml"));
@@ -208,18 +209,16 @@ public class AddProductController implements Initializable {
 
                 // This line gets the Stage information
                 Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
                 window.setScene(mainScreenScene);
                 window.show();
             }else{
                 return;
-            }
-            
+            }   
         }catch(IOException e){
             
-        }
-        
+        } 
     }
+    
     /**
      * This method checks for errors and saves the new product we've created
      * @param event Event captured that detects if save button is pushed
@@ -246,7 +245,6 @@ public class AddProductController implements Initializable {
                 
                 mainInventory.addProduct(newProduct);
 
-                // For the .fxml in this one as well I deleted the controller fx:id 
                 // Set the scene for the Main Screen
                 // Load .fxml and set controller
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MainScreen.fxml"));
@@ -259,14 +257,12 @@ public class AddProductController implements Initializable {
 
                 // This line gets the Stage information
                 Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
                 window.setScene(mainScreenScene);
                 window.show();
             }
         }catch(IOException e){
             
-        }
-        
+        }  
     }
     
     /**
@@ -349,11 +345,9 @@ public class AddProductController implements Initializable {
         if(this.errorNumber == 1){
             error.setHeaderText("Error adding associated part!");
             error.setContentText("A part must be selected or a part must be added!");
-            
         }
         if(this.errorNumber == 2){
             error.setContentText("All fields must have content!");
-            
         }
         if(this.errorNumber == 3){
             error.setContentText("A product must have at least one associated part!");
@@ -372,7 +366,7 @@ public class AddProductController implements Initializable {
     }
     /**
      * Gets the size of allParts
-     * @return 
+     * @return Value returned is the size of our list of parts
      */
     public int getSizeOfAllParts(){
         return allParts.size();

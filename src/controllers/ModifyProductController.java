@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,12 +28,11 @@ import models.Product;
 
 /**
  * FXML Controller class
- *
  * @author alexhewitt
  */
 public class ModifyProductController implements Initializable {
 
-    //FXML instantiation of id's
+    // FXML instantiation
     @FXML private TextField productIdTextField;
     @FXML private TextField productNameTextField;
     @FXML private TextField productInvTextField;
@@ -56,27 +54,36 @@ public class ModifyProductController implements Initializable {
     @FXML private Button productCancelButton;
     @FXML private TableView<Part> modifyProductTopTableView;
     @FXML private TableView<Part> modifyProductBottomTableView;
+    
     Inventory mainInventory;
     Product productSelected;
     Part selectedPart;
     int errorNumber;
     boolean errorThrown = false;
+    
     ObservableList <Part> allParts = FXCollections.observableArrayList();
     ObservableList <Part> associatedParts = FXCollections.observableArrayList();
     ObservableList<Part> partInventorySearchList = FXCollections.observableArrayList();
     
+    /**
+     * This initializes our Modify Product Controller's constructor
+     * @param inv Inventory that is passed from screen to screen
+     * @param selectedProduct Product that is selected from the prior screen
+     */
     public ModifyProductController(Inventory inv, Product selectedProduct){
         this.mainInventory = inv;
         this.productSelected = selectedProduct;
     }
+    
     /**
-     * Initializes the controller class.
+     * Initializes the Modify Product screen
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Get current associated parts
         associatedParts.setAll(productSelected.getAllAssociatedParts());
         productSearchTextField.setText("");
+        // Setup our tables
         setUpProductInfo();
         setAllPartsTable();
         setAssociatedPartsTable();
@@ -84,6 +91,7 @@ public class ModifyProductController implements Initializable {
     
     /**
      * This method takes us back to the main screen if the cancel button is pushed.
+     * It also prompts to make sure the user wants to cancel
      * Alert documentation https://docs.oracle.com/javase/8/javafx/api/javafx/scene/control/Alert.AlertType.html
      * @param event Event that is caught to detect cancel button pushed
      */
@@ -95,10 +103,11 @@ public class ModifyProductController implements Initializable {
             cancelAlert.setTitle("CANCEL");
             cancelAlert.setHeaderText("Are you sure you want to cancel?");
             cancelAlert.setContentText("Click 'OK' to confirm.");
-            
             Optional<ButtonType> decision = cancelAlert.showAndWait();
+            
+            // If the user's decision is 'OK'
             if(decision.get() == ButtonType.OK){
-                // For the .fxml in this one as well I deleted the controller fx:id 
+
                 // Set the scene for the Main Screen
                 // Load .fxml and set controller
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MainScreen.fxml"));
@@ -111,17 +120,14 @@ public class ModifyProductController implements Initializable {
 
                 // This line gets the Stage information
                 Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
                 window.setScene(mainScreenScene);
                 window.show();
             }else{
                 return;
-            }
-            
+            }     
         }catch(IOException e){
             
-        }
-        
+        }   
     }
     
     /**
@@ -134,13 +140,13 @@ public class ModifyProductController implements Initializable {
             this.errorNumber = 0;
             checkForErrors();
             showAlert(errorNumber);
+            
             if(errorNumber == 0){
                 for(Part part: associatedParts){ // Add associated parts to product
                     productSelected.addAssociatedPart(part);
                 }
                 updateProduct();
 
-                // For the .fxml in this one as well I deleted the controller fx:id 
                 // Set the scene for the Main Screen
                 // Load .fxml and set controller
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MainScreen.fxml"));
@@ -153,15 +159,14 @@ public class ModifyProductController implements Initializable {
 
                 // This line gets the Stage information
                 Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-
                 window.setScene(mainScreenScene);
                 window.show();
             }
         }catch(IOException e){
             
-        }
-        
+        }     
     }
+    
     /**
      * This method sets up the top table that shows all of the parts currently
      * in the inventory
@@ -233,6 +238,7 @@ public class ModifyProductController implements Initializable {
             productPriceBottomColumn.setCellValueFactory(new PropertyValueFactory<Part, Double>("price"));
         }
     }
+    
     /**
      * This method removes associated parts that we have added to a product
      */
@@ -243,8 +249,9 @@ public class ModifyProductController implements Initializable {
         removeAlert.setTitle("REMOVE");
         removeAlert.setHeaderText("Are you sure you want to remove the associated part?");
         removeAlert.setContentText("Click 'OK' to confirm.");
-
         Optional<ButtonType> decision = removeAlert.showAndWait();
+        
+        // If user selects 'OK'
         if(decision.get() == ButtonType.OK){
             // Because parts aren't associated to product until save button pushed
             // there is no need to remove associated part from product
@@ -252,10 +259,10 @@ public class ModifyProductController implements Initializable {
             selectedPart = modifyProductBottomTableView.getSelectionModel().getSelectedItem();
             checkForErrors();
             showAlert(errorNumber);
+            
             if(errorNumber == 0){
                 // Add our selected part back to our allparts list
                 // Remove our selected part from our associated parts list
-
                 associatedParts.remove(selectedPart); // Removing from selected parts
                 allParts.add(selectedPart); // Add part back to our main list
 
@@ -270,11 +277,10 @@ public class ModifyProductController implements Initializable {
                 productInventoryBottomColumn.setCellValueFactory(new PropertyValueFactory<Part, Integer>("stock"));
                 productNameBottomColumn.setCellValueFactory(new PropertyValueFactory<Part, String>("name"));
                 productPriceBottomColumn.setCellValueFactory(new PropertyValueFactory<Part, Double>("price"));
-
              }
         }
-        
     }
+    
     /**
      * This method updates the product with the new information and associated 
      * parts
@@ -291,9 +297,10 @@ public class ModifyProductController implements Initializable {
                     Integer.valueOf(productMaxTextField.getText()))
                     );
     }
+    
     /**
      * This method sets up our text fields by pulling in the information from 
-     * the current selected product.=
+     * the current selected product from the prior screen
      */
     public void setUpProductInfo(){
         // Set our text fields to the current value
@@ -308,13 +315,15 @@ public class ModifyProductController implements Initializable {
     /**
      * This method searches for the part specified in the text box 
      * (via id, or name)
-     * @param event
+     * @param event Event that is captured to detect if the search button is pushed
      */
     @FXML
     public void searchPart(ActionEvent event){
+        // If there is no text in the search bar
         if(productSearchTextField.getText().isEmpty()){
                 return;
         }
+        
         // If search bar contains text (name)
         if(productSearchTextField.getText().matches("[a-zA-Z]+")){
             partInventorySearchList.clear(); // Remove elements from any previous search
@@ -322,6 +331,7 @@ public class ModifyProductController implements Initializable {
             modifyProductTopTableView.setItems(partInventorySearchList);
             modifyProductTopTableView.refresh(); 
         }
+        
         // If search bar contains numbers (id)
         if(productSearchTextField.getText().matches("^[0-9]*$")){
             int id = Integer.valueOf(productSearchTextField.getText());
@@ -336,7 +346,7 @@ public class ModifyProductController implements Initializable {
     
     /**
      * This method is ran when the part search bar is clicked to restore it
-     * @param event
+     * @param event Event that is captured to detect if mouse is clicked
      */
     @FXML
     public void resetPartTableAfterSearch(MouseEvent event){
@@ -357,6 +367,7 @@ public class ModifyProductController implements Initializable {
             errorThrown = true;
             return;
         }
+        
         /**
          * If any of the text fields are empty an error is thrown
          */
@@ -369,6 +380,7 @@ public class ModifyProductController implements Initializable {
             errorThrown = true;
             return;
         }
+        
         /**
          * If product doesn't have one associated part an error is thrown
          */
@@ -377,6 +389,7 @@ public class ModifyProductController implements Initializable {
             errorThrown = true;
             return;
         }
+        
         /**
          * If inv, price, max or min contain letters an error is thrown
          */
@@ -390,6 +403,7 @@ public class ModifyProductController implements Initializable {
             this.errorNumber = 5;
             return;
         }
+        
         /**
          * If the product name field contains numbers an error is thrown
          */
@@ -398,6 +412,7 @@ public class ModifyProductController implements Initializable {
             this.errorNumber = 6;
             return;
         }
+        
         /**
          * If any fields are less than zero an error is thrown
          */
@@ -409,6 +424,7 @@ public class ModifyProductController implements Initializable {
             errorThrown = true;
             return;
         }  
+        
         /**
          * If the inventory value is greater than the max value an error is thrown
          */
@@ -425,7 +441,11 @@ public class ModifyProductController implements Initializable {
             this.errorNumber = 8;
             errorThrown = true;
             return;
-        }if(Integer.valueOf(productMinTextField.getText()) > Integer.valueOf(productMaxTextField.getText())){
+        }
+        /**
+         * If the min field is greater than the max field an error is thrown
+         */
+        if(Integer.valueOf(productMinTextField.getText()) > Integer.valueOf(productMaxTextField.getText())){
             this.errorNumber = 9;
             errorThrown = true;
             return;
@@ -434,7 +454,7 @@ public class ModifyProductController implements Initializable {
     
     /**
      * This method shows alerts based on checkForErrors() result
-     * @param errorCode Number that determines which alert we show
+     * @param errorCode Error number that determines which alert we show
      */
     public void showAlert(int errorCode){
         Alert error = new Alert(Alert.AlertType.ERROR);
@@ -445,12 +465,10 @@ public class ModifyProductController implements Initializable {
         }
         if(this.errorNumber == 1){
             error.setHeaderText("Error adding associated part!");
-            error.setContentText("A part must be selected or a part must be added!");
-            
+            error.setContentText("A part must be selected or a part must be added!");           
         }
         if(this.errorNumber == 2){
-            error.setContentText("All fields must have content!");
-            
+            error.setContentText("All fields must have content!");   
         }
         if(this.errorNumber == 3){
             error.setContentText("A product must have at least one associated part!");
@@ -475,6 +493,5 @@ public class ModifyProductController implements Initializable {
         }
         error.showAndWait();
         return;
-    }
-    
+    }  
 }
