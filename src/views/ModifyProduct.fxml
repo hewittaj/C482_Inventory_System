@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ModifyProductController">
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black; -fx-border-radius: 10;" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
          <children>
@@ -52,7 +52,7 @@
                   <TextField fx:id="productMinTextField" layoutX="188.0" layoutY="153.0" prefWidth="85.0" />
                </children>
             </AnchorPane>
-            <TextField fx:id="productSearchTextField" disable="true" layoutX="493.0" layoutY="31.0" promptText="Search by Part ID or Name" />
+            <TextField fx:id="productSearchTextField" layoutX="493.0" layoutY="31.0" onMouseClicked="#resetPartTableAfterSearch" promptText="Search by Part ID or Name" />
             <TableView fx:id="modifyProductTopTableView" layoutX="321.0" layoutY="65.0" prefHeight="135.0" prefWidth="344.0">
               <columns>
                 <TableColumn fx:id="productIdTopColumn" prefWidth="47.0" text="Part ID" />
@@ -61,7 +61,7 @@
                   <TableColumn fx:id="productPriceTopColumn" prefWidth="114.0" text="Price/Cost per Unit" />
               </columns>
             </TableView>
-            <Button fx:id="productAddButton" layoutX="598.0" layoutY="207.0" mnemonicParsing="false" text="Add">
+            <Button fx:id="productAddButton" layoutX="598.0" layoutY="207.0" mnemonicParsing="false" onAction="#addAssociatedPart" text="Add">
                <font>
                   <Font name="Arial" size="13.0" />
                </font>
@@ -74,17 +74,17 @@
                   <TableColumn fx:id="productPriceBottomColumn" prefWidth="114.0" text="Price/Cost per Unit" />
                </columns>
             </TableView>
-            <Button fx:id="productRemoveButton" layoutX="514.0" layoutY="384.0" mnemonicParsing="false" text="Remove Associated Part">
+            <Button fx:id="productRemoveButton" layoutX="514.0" layoutY="384.0" mnemonicParsing="false" onAction="#removeAssociatedPart" text="Remove Associated Part">
                <font>
                   <Font name="Arial" size="13.0" />
                </font>
             </Button>
-            <Button fx:id="productSaveButton" layoutX="514.0" layoutY="423.0" mnemonicParsing="false" text="Save">
+            <Button fx:id="productSaveButton" layoutX="514.0" layoutY="423.0" mnemonicParsing="false" onAction="#saveButtonPushed" text="Save">
                <font>
                   <Font name="Arial" size="13.0" />
                </font>
             </Button>
-            <Button fx:id="productCancelButton" layoutX="608.0" layoutY="423.0" mnemonicParsing="false" text="Cancel">
+            <Button fx:id="productCancelButton" layoutX="608.0" layoutY="423.0" mnemonicParsing="false" onAction="#cancelButtonPushed" text="Cancel">
                <font>
                   <Font name="Arial" size="13.0" />
                </font>
@@ -94,6 +94,7 @@
                   <Font name="Arial Bold" size="18.0" />
                </font>
             </Label>
+            <Button layoutX="432.0" layoutY="31.0" mnemonicParsing="false" onAction="#searchPart" text="Search" />
          </children>
       </AnchorPane>
    </children>

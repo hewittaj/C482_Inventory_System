@@ -2,31 +2,29 @@ package models;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 
 /**
- * TO DO
+ * This class is used to represent a product in our inventory
  * @author alexhewitt
  */
 public class Product {
     
-    private ObservableList<Part> associatedParts; // TO DO
-    // TO DO
-    private int id;// TO DO
-    private String name;// TO DO
-    private double price;// TO DO
-    private int stock;// TO DO
-    private int min;// TO DO
-    private int max; // TO DO
+    private ObservableList<Part> associatedParts;
+    private int id;
+    private String name;
+    private double price;
+    private int stock;
+    private int min;
+    private int max;
     
     /**
-     * 
-     * @param id
-     * @param name
-     * @param price
-     * @param stock
-     * @param min
-     * @param max 
+     * This method sets up the constructor for our Product
+     * @param id Id of the product
+     * @param name Name of the product
+     * @param price Price of the product
+     * @param stock Inventory level of the product
+     * @param min Minimum allowable of the product
+     * @param max Maximum allowable of the product
      */
     public Product(int id, String name, double price, int stock, int min,
             int max){
@@ -38,115 +36,132 @@ public class Product {
         this.min = min;
         this.max = max;
     }
+    /**
+     * This method sets up the constructor for our Product if no inventory level is provided
+     * @param id Id of the product
+     * @param name Name of the product
+     * @param price Price of the product
+     * @param min Minimum allowable of the product
+     * @param max Maximum allowable of the product
+     */
+    public Product(int id, String name, double price, int min, int max){
+        this.associatedParts = FXCollections.observableArrayList();
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.stock = 0;
+        this.min = min;
+        this.max = max;
+    }
     
     /**
-     * TO DO
-     * @param id 
+     * This method sets the Id of the Product
+     * @param id Id we want to set for the product
      */
     public void setId(int id) {
         this.id = id;
     }
     
     /**
-     * TO DO
-     * @param name 
+     * This method sets the name of the product
+     * @param name Name we want to set for the product
      */
     public void setName(String name) {
         this.name = name;
     }
     
     /**
-     * TO DO
-     * @param price 
+     * This method sets the price of the product
+     * @param price Price we want to set for the product
      */
     public void setPrice(double price) {
         this.price = price;
     }
     
     /**
-     * TODO
-     * @param stock 
+     * This method sets the inventory level of the product
+     * @param stock Inventory level we want to set for the product
      */
     public void setStock(int stock) {
         this.stock = stock;
     }
     
     /**
-     * TODO
-     * @param min 
+     * This method sets the minimum allowable of the product
+     * @param min Minimum level we want to set for the product
      */
     public void setMin(int min) {
         this.min = min;
     }
     
     /**
-     * TO DO
-     * @param max 
+     * This method sets the maximum allowable of the product
+     * @param max Maximum level we want to set for the product
      */
     public void setMax(int max) {
         this.max = max;
     }
     
     /**
-     * TO DO
-     * @return 
+     * This method gets the Id of the product
+     * @return Id of product
      */
     public int getId() {
         return id;
     }
     
     /**
-     * TO DO
-     * @return 
+     * This method gets the Name of the product
+     * @return Name of product
      */
     public String getName() {
         return name;
     }
     
     /**
-     * TO DO
-     * @return 
+     * This method gets the Price of the product
+     * @return Price of product
      */
     public double getPrice() {
         return price;
     }
     
     /**
-     * TO DO
-     * @return 
+     * This method gets the Inventory level of the product
+     * @return Inventory level of product
      */
     public int getStock() {
         return stock;
     }
 
     /**
-     * TO DO
-     * @return 
+     * This method gets the Minimum allowable of the product
+     * @return Minimum allowable of the product
      */
     public int getMin() {
         return min;
     }
 
     /**
-     * TO DO
-     * @return 
+     * This method gets the Maximum allowable of the product
+     * @return Maximum allowable of the product
      */
     public int getMax() {
         return max;
     }
     
     /**
-     * TO DO 
-     * @param part 
+     * This method adds an associated part to the product
+     * @param part Part we want to associate with the product
      */
     public void addAssociatedPart(Part part){
         associatedParts.add(part);
     }
     
     /**
-     * TO DO
-     * @param selectedAssociatedPart
-     * @return 
+     * This method deletes an associated part of the product
+     * @param selectedAssociatedPart Selected part that we want to remove association with
+     * @return Boolean returned based of UML
      */
     public boolean deleteAssociatedPart(Part selectedAssociatedPart){
         //probably need an if statement to say if product deleted properly
@@ -155,8 +170,8 @@ public class Product {
     }
     
     /**
-     * TO DO
-     * @return 
+     * This method gets all the associated parts of the product
+     * @return List returned of associated parts of product
      */
     public ObservableList<Part> getAllAssociatedParts(){
         return associatedParts;

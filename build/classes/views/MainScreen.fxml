@@ -28,7 +28,7 @@
                         <Font name="Arial Bold" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="partSearchBar" layoutX="257.0" layoutY="29.0" promptText="Search by Part ID or Name" />
+                  <TextField fx:id="partSearchBar" layoutX="257.0" layoutY="29.0" onAction="#searchPart" onMouseClicked="#resetPartTableAfterSearch" promptText="Search by Part ID or Name" />
                   <Button fx:id="addPartButton" layoutX="218.0" layoutY="274.0" mnemonicParsing="false" onAction="#addPartButtonPushed" prefHeight="20.0" text="Add">
                      <font>
                         <Font name="Arial" size="16.0" />
@@ -39,9 +39,14 @@
                         <Font name="Arial" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="deletePartButton" layoutX="375.0" layoutY="274.0" mnemonicParsing="false" prefHeight="20.0" text="Delete" AnchorPane.rightAnchor="6.5">
+                  <Button fx:id="deletePartButton" layoutX="375.0" layoutY="274.0" mnemonicParsing="false" onAction="#deletePartButtonPushed" prefHeight="20.0" text="Delete" AnchorPane.rightAnchor="6.5">
                      <font>
                         <Font name="Arial" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="191.0" layoutY="29.0" mnemonicParsing="false" onAction="#searchPart" text="Search">
+                     <font>
+                        <Font name="Arial" size="13.0" />
                      </font>
                   </Button>
                </children>
@@ -61,20 +66,25 @@
                         <Font name="Arial Bold" size="18.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="procuctSearchBar" layoutX="194.0" layoutY="28.0" prefHeight="27.0" prefWidth="184.0" promptText="Search by Product ID or Name" />
-                  <Button fx:id="addProductButton" layoutX="184.0" layoutY="274.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="57.0" text="Add">
+                  <TextField fx:id="productSearchBar" layoutX="194.0" layoutY="28.0" onAction="#searchProduct" onMouseClicked="#resetProductTableAfterSearch" prefHeight="27.0" prefWidth="184.0" promptText="Search by Product ID or Name" />
+                  <Button fx:id="addProductButton" layoutX="184.0" layoutY="274.0" mnemonicParsing="false" onAction="#addProductButtonPushed" prefHeight="20.0" prefWidth="57.0" text="Add">
                      <font>
                         <Font name="Arial" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="modifyProductButton" layoutX="256.0" layoutY="274.0" mnemonicParsing="false" prefHeight="20.0" text="Modify">
+                  <Button fx:id="modifyProductButton" layoutX="256.0" layoutY="274.0" mnemonicParsing="false" onAction="#modifyProductButtonPushed" prefHeight="20.0" text="Modify">
                      <font>
                         <Font name="Arial" size="16.0" />
                      </font>
                   </Button>
-                  <Button fx:id="deleteProductButton" layoutX="334.0" layoutY="274.0" mnemonicParsing="false" prefHeight="20.0" text="Delete">
+                  <Button fx:id="deleteProductButton" layoutX="334.0" layoutY="274.0" mnemonicParsing="false" onAction="#deleteProductButtonPushed" prefHeight="20.0" text="Delete">
                      <font>
                         <Font name="Arial" size="16.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="129.0" layoutY="28.0" mnemonicParsing="false" onAction="#searchProduct" text="Search">
+                     <font>
+                        <Font name="Arial" size="13.0" />
                      </font>
                   </Button>
                </children>
@@ -86,7 +96,7 @@
             <Font name="Arial Bold" size="24.0" />
          </font>
       </Label>
-      <Button fx:id="exitButton" layoutX="863.0" layoutY="446.0" mnemonicParsing="false" text="Exit">
+      <Button fx:id="exitButton" layoutX="863.0" layoutY="446.0" mnemonicParsing="false" onAction="#exitButtonPushed" text="Exit">
          <font>
             <Font name="Arial" size="16.0" />
          </font>

@@ -8,19 +8,19 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AddPartController">
+<AnchorPane id="AnchorPane" prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label layoutX="76.0" layoutY="66.0" text="Add Part">
          <font>
             <Font name="Arial Bold" size="18.0" />
          </font>
       </Label>
-      <RadioButton fx:id="inHouseRadioButton" layoutX="188.0" layoutY="67.0" mnemonicParsing="false" text="In-House">
+      <RadioButton fx:id="inHouseRadioButton" layoutX="188.0" layoutY="67.0" mnemonicParsing="false" onAction="#inHouseRadioButtonSelected" text="In-House">
          <font>
             <Font size="14.0" />
          </font>
       </RadioButton>
-      <RadioButton fx:id="outsourcedRadioButton" layoutX="379.0" layoutY="67.0" mnemonicParsing="false" text="Outsourced">
+      <RadioButton fx:id="outsourcedRadioButton" layoutX="379.0" layoutY="67.0" mnemonicParsing="false" onAction="#outsourcedRadioButtonSelected" text="Outsourced">
          <font>
             <Font size="14.0" />
          </font>
@@ -76,27 +76,27 @@
             </AnchorPane>
          </children>
       </VBox>
-      <TextField fx:id="partIdTextField" disable="true" layoutX="176.0" layoutY="129.0" promptText=" Auto Gen - Disabled">
+      <TextField fx:id="partIdTextField" disable="true" layoutX="180.0" layoutY="129.0" promptText=" Auto Gen - Disabled">
          <font>
             <Font name="Arial" size="13.0" />
          </font></TextField>
-      <TextField fx:id="partNameTextField" layoutX="176.0" layoutY="165.0">
+      <TextField fx:id="partNameTextField" layoutX="180.0" layoutY="165.0">
          <font>
             <Font name="Arial" size="13.0" />
          </font></TextField>
-      <TextField fx:id="partInvTextField" layoutX="176.0" layoutY="198.0">
+      <TextField fx:id="partInvTextField" layoutX="180.0" layoutY="198.0">
          <font>
             <Font name="Arial" size="13.0" />
          </font></TextField>
-      <TextField fx:id="partPriceTextField" layoutX="176.0" layoutY="233.0">
+      <TextField fx:id="partPriceTextField" layoutX="180.0" layoutY="233.0">
          <font>
             <Font name="Arial" size="13.0" />
          </font></TextField>
-      <TextField fx:id="partMaxTextField" layoutX="176.0" layoutY="268.0">
+      <TextField fx:id="partMaxTextField" layoutX="180.0" layoutY="268.0">
          <font>
             <Font name="Arial" size="13.0" />
          </font></TextField>
-      <TextField fx:id="partSwappableTextField" layoutX="176.0" layoutY="307.0">
+      <TextField fx:id="partSwappableTextField" layoutX="180.0" layoutY="307.0">
          <font>
             <Font name="Arial" size="13.0" />
          </font></TextField>
@@ -104,7 +104,7 @@
          <font>
             <Font name="Arial" size="13.0" />
          </font></TextField>
-      <Button fx:id="partSaveButton" layoutX="319.0" layoutY="411.0" mnemonicParsing="false" text="Save" />
-      <Button fx:id="partCancelButton" layoutX="379.0" layoutY="411.0" mnemonicParsing="false" text="Cancel" />
+      <Button fx:id="partSaveButton" layoutX="319.0" layoutY="411.0" mnemonicParsing="false" onAction="#saveButtonPushed" text="Save" />
+      <Button fx:id="partCancelButton" layoutX="379.0" layoutY="411.0" mnemonicParsing="false" onAction="#cancelButtonPushed" text="Cancel" />
    </children>
 </AnchorPane>
