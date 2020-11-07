@@ -28,7 +28,7 @@ import models.Part;
 import models.Product;
 
 /**
- * --A detailed description of a logical or runtime error that you corrected in the 
+ * --MA detailed description of a logical or runtime error that you corrected in the 
  *   code and a detailed description of how you corrected it above the line of code you
  *   are referring to.
  *
