@@ -28,6 +28,27 @@ import models.Part;
 import models.Product;
 
 /**
+ * --MA detailed description of a logical or runtime error that you corrected in the 
+ *   code and a detailed description of how you corrected it above the line of code you
+ *   are referring to.
+ *
+ * - See addPartButtonPushed for more information. 
+ *
+ * 
+ * --A compatible feature suitable to your application that would extend functionality
+ *   to the next version if you were to update the application
+ * 
+ * - A feature that I would add to this inventory system is to update the inventory
+ *   levels as parts are added to a product. I would also add the option for buying/selling
+ *   parts and products that would update our inventory as well.
+ * 
+ *   Another functionality I would add would be to connect the program to a database
+ *   in order to have non-volatile data.
+ * 
+ */
+
+
+/**
  * Controller class for the main screen of the Inventory System
  * @author alexhewitt
  */
@@ -70,6 +91,14 @@ public class MainScreenController implements Initializable {
         this.mainInventory = inventory;
     }
     
+    
+    /*
+    One error that I received when trying to load a new screen was that the controller
+    that I created would not load the screen even though everything was set properly.
+    What I figured out was when I set up my own controller it must not be referred
+    to in the .fxml file header portion. So I had to delete that error in order
+    for the AddPart.fxml file to load properly.
+    */
     /**
      * This method detects if the add part button is pushed and loads the screen
      * @param event Catches events that happen in order to capture button push

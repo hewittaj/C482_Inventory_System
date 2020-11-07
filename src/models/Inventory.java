@@ -76,11 +76,13 @@ public class Inventory {
      */
     public static ObservableList<Part> lookupPart(String partName){
         ObservableList<Part> returnedParts = FXCollections.observableArrayList();
+        
         for(Part part: allParts){
             if(part.getName().contains(partName)){
                 returnedParts.add(part); 
             }
         }
+        
         if(returnedParts.isEmpty()){
             Alert notFound = new Alert(Alert.AlertType.ERROR);
             notFound.setTitle("ERROR!");
